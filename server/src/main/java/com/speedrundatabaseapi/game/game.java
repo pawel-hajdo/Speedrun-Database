@@ -15,7 +15,7 @@ public class game {
             strategy = GenerationType.SEQUENCE,
             generator = "game_sequence"
     )
-    private Long id;
+    private long game_id;
     private String name;
     private int releaseYear;
     private String description;
@@ -24,8 +24,8 @@ public class game {
     public game() {
     }
 
-    public game(Long id, String name, int releaseYear, String description, byte[] image) {
-        this.id = id;
+    public game(Long game_id, String name, int releaseYear, String description, byte[] image) {
+        this.game_id = game_id;
         this.name = name;
         this.releaseYear = releaseYear;
         this.description = description;
@@ -33,11 +33,11 @@ public class game {
     }
 
     public Long getId() {
-        return id;
+        return game_id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(Long game_id) {
+        this.game_id = game_id;
     }
 
     public String getName() {
