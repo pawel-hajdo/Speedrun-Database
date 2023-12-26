@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table
-public class game {
+public class Game {
 
     @Id
     @SequenceGenerator(
@@ -17,26 +17,25 @@ public class game {
     )
     private long game_id;
     private String name;
-    private int releaseYear;
+    private int release_year;
     private String description;
     private byte[] image;
 
-    public game() {
+    public Game() {
     }
 
-    public game(Long game_id, String name, int releaseYear, String description, byte[] image) {
+    public Game(long game_id, String name, int release_year, String description, byte[] image) {
         this.game_id = game_id;
         this.name = name;
-        this.releaseYear = releaseYear;
+        this.release_year = release_year;
         this.description = description;
         this.image = image;
     }
-
-    public Long getId() {
+    public long getGame_id() {
         return game_id;
     }
 
-    public void setId(Long game_id) {
+    public void setGame_id(long game_id) {
         this.game_id = game_id;
     }
 
@@ -48,12 +47,12 @@ public class game {
         this.name = name;
     }
 
-    public int getReleaseYear() {
-        return releaseYear;
+    public int getRelease_year() {
+        return release_year;
     }
 
-    public void setReleaseYear(int releaseYear) {
-        this.releaseYear = releaseYear;
+    public void setRelease_year(int release_year) {
+        this.release_year = release_year;
     }
 
     public String getDescription() {
