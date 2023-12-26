@@ -8,12 +8,12 @@ public class platform {
 
     @Id
     @SequenceGenerator(
-            name = "game_sequence",
+            name = "platform_sequence",
             allocationSize = 1
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "game_sequence"
+            generator = "platform_sequence"
     )
     private long platform_id;
     private String name;
