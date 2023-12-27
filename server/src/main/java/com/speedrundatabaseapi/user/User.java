@@ -1,7 +1,9 @@
 package com.speedrundatabaseapi.user;
 
+import com.speedrundatabaseapi.rating.GameRating;
 import jakarta.persistence.*;
 
+import java.util.Set;
 @Entity
 @Table
 public class User {
@@ -25,6 +27,9 @@ public class User {
     private String role;
     @Column(name = "email")
     private String email;
+
+    @OneToMany(mappedBy = "user")
+    Set<GameRating> ratings;
 
     public User() {
     }

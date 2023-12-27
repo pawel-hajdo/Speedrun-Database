@@ -1,6 +1,8 @@
 package com.speedrundatabaseapi.game;
 
 import com.speedrundatabaseapi.platform.Platform;
+import com.speedrundatabaseapi.rating.GameRating;
+import com.speedrundatabaseapi.rating.GameRatingKey;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -36,6 +38,9 @@ public class Game {
             inverseJoinColumns = @JoinColumn(name = "platform_id")
     )
     Set<Platform> gameOnPlatforms;
+
+    @OneToMany(mappedBy = "game")
+    Set<GameRating> ratings;
     public Game() {
     }
 
