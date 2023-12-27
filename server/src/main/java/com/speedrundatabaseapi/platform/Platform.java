@@ -17,18 +17,17 @@ public class Platform {
     )
     @Column(name = "platform_id")
     private long platformId;
+    @Column(name = "type")
+    private PlatformType type;
     @Column(name = "name")
     private String name;
-    @Column(name = "type")
-    private String type;
 
     public Platform() {
     }
 
-    public Platform(long platformId, String name, String type) {
-        this.platformId = platformId;
-        this.name = name;
+    public Platform( PlatformType type, String name) {
         this.type = type;
+        this.name = name;
     }
 
     public long getPlatformId() {
@@ -47,11 +46,11 @@ public class Platform {
         this.name = name;
     }
 
-    public String getType() {
+    public PlatformType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(PlatformType type) {
         this.type = type;
     }
 }
