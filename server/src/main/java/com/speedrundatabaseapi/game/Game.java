@@ -1,6 +1,9 @@
 package com.speedrundatabaseapi.game;
 
+import com.speedrundatabaseapi.platform.Platform;
 import jakarta.persistence.*;
+
+import java.util.Set;
 
 @Entity
 @Table
@@ -26,6 +29,13 @@ public class Game {
     @Column(name = "image")
     private byte[] image;
 
+    @ManyToMany
+    @JoinTable(
+            name = "game_on_platform",
+            joinColumns = @JoinColumn(name = "game_id"),
+            inverseJoinColumns = @JoinColumn(name = "platform_id")
+    )
+    Set<Platform> gameOnPlatforms;
     public Game() {
     }
 
@@ -75,5 +85,13 @@ public class Game {
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+
+    public Set<Platform> getGameOnPlatforms() {
+        return gameOnPlatforms;
+    }
+
+    public void setGameOnPlatforms(Set<Platform> gameOnPlatforms) {
+        this.gameOnPlatforms = gameOnPlatforms;
     }
 }

@@ -1,6 +1,10 @@
 package com.speedrundatabaseapi.platform;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.speedrundatabaseapi.game.Game;
 import jakarta.persistence.*;
+
+import java.util.Set;
 
 @Entity
 @Table
@@ -21,6 +25,9 @@ public class Platform {
     private PlatformType type;
     @Column(name = "name")
     private String name;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "gameOnPlatforms")
+    Set<Game> gamesAssignedToPlatform;
 
     public Platform() {
     }
@@ -52,5 +59,13 @@ public class Platform {
 
     public void setType(PlatformType type) {
         this.type = type;
+    }
+
+    public Set<Game> getGamesAssignedToPlatform() {
+        return gamesAssignedToPlatform;
+    }
+
+    public void setGamesAssignedToPlatform(Set<Game> gamesAssignedToPlatform) {
+        this.gamesAssignedToPlatform = gamesAssignedToPlatform;
     }
 }
