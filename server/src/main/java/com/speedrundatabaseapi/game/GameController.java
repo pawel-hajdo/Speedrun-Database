@@ -59,6 +59,18 @@ public class GameController {
         }
     }
 
+    @DeleteMapping(path = "/{gameId}")
+    public ResponseEntity<String> deleteGame(@PathVariable Long gameId) {
+        try {
+            gameService.deleteGame(gameId);
+            return ResponseEntity.ok("Game deleted successfully");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error while deleting game");
+        }
+    }
+
     @PutMapping(path = "/{gameId}/platform/{platformId}")
     public ResponseEntity<String> assignPlatformToGame(
             @PathVariable Long gameId,

@@ -43,6 +43,10 @@ public class GameService {
         gameRepository.save(game);
     }
 
+    public void deleteGame(Long gameId) {
+        gameRepository.deleteById(gameId);
+    }
+
     @Transactional
     public void assignPlatformToGame(Long gameId, Long platformId) {
         Game game = gameRepository.findById(gameId).orElseThrow(()-> new EntityNotFoundException("Game not found"));
