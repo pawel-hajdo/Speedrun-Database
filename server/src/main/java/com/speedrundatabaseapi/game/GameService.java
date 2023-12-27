@@ -33,6 +33,16 @@ public class GameService {
         return gameRepository.findById(gameId).orElseThrow(()-> new EntityNotFoundException("Game not found"));
     }
 
+    public void changeGameDetails(Long gameId, Game updatedGameDetails) {
+        Game game = gameRepository.findById(gameId).orElseThrow(()-> new EntityNotFoundException("Game not found"));
+        game.setName(updatedGameDetails.getName());
+        game.setDescription(updatedGameDetails.getDescription());
+        game.setReleaseYear(updatedGameDetails.getReleaseYear());
+        game.setImage(updatedGameDetails.getImage());
+
+        gameRepository.save(game);
+    }
+
     @Transactional
     public void assignPlatformToGame(Long gameId, Long platformId) {
         Game game = gameRepository.findById(gameId).orElseThrow(()-> new EntityNotFoundException("Game not found"));
@@ -44,4 +54,5 @@ public class GameService {
         game.setGameOnPlatforms(gameOnPlatforms);
         gameRepository.save(game);
     }
+
 }

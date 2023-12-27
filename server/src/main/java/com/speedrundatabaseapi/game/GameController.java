@@ -35,12 +35,27 @@ public class GameController {
     }
 
     @PostMapping
-    public ResponseEntity<String> addNewGame(Game game){
+    public ResponseEntity<String> addNewGame(@RequestBody Game game){
         try {
             gameService.addNewGame(game);
             return ResponseEntity.ok("Game added successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error while adding a new game");
+        }
+    }
+
+    @PutMapping(path = "/{gameId}")
+    public ResponseEntity<String> changeGameDetails(
+            @PathVariable Long gameId,
+            @RequestBody Game updatedGameDetails
+    ){
+        try{
+            gameService.changeGameDetails(gameId, updatedGameDetails);
+            return ResponseEntity.ok("Game details updated successfully");
+        }catch (EntityNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error while updating game details");
         }
     }
 
