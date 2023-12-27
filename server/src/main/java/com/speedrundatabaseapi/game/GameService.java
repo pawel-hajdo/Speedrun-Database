@@ -2,8 +2,10 @@ package com.speedrundatabaseapi.game;
 
 import com.speedrundatabaseapi.platform.Platform;
 import com.speedrundatabaseapi.platform.PlatformRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -19,7 +21,7 @@ public class GameService {
         this.platformRepository = platformRepository;
     }
 
-    public List<Game> getGames(){
+    public List<Game> getAllGames(){
         return gameRepository.findAll();
     }
 
@@ -27,14 +29,19 @@ public class GameService {
         gameRepository.save(game);
     }
 
-    public Game assignPlatformToGame(Long gameId, Long platformId) {
-        Game game = gameRepository.findById(gameId).get();
-        Platform platform = platformRepository.findById(platformId).get();
+    public Game getGameDetails(Long gameId) {
+        return gameRepository.findById(gameId).orElseThrow(()-> new EntityNotFoundException("Game not found"));
+    }
+
+    @Transactional
+    public void assignPlatformToGame(Long gameId, Long platformId) {
+        Game game = gameRepository.findById(gameId).orElseThrow(()-> new EntityNotFoundException("Game not found"));
+        Platform platform = platformRepository.findById(platformId).orElseThrow(()-> new EntityNotFoundException("Platform not found"));
 
         Set<Platform> gameOnPlatforms = game.getGameOnPlatforms();
         gameOnPlatforms.add(platform);
 
         game.setGameOnPlatforms(gameOnPlatforms);
-        return gameRepository.save(game);
+        gameRepository.save(game);
     }
 }
