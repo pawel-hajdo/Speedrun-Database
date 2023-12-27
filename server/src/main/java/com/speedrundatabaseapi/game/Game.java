@@ -15,28 +15,34 @@ public class Game {
             strategy = GenerationType.SEQUENCE,
             generator = "game_sequence"
     )
-    private long game_id;
+    @Column(name = "game_id")
+    private long gameId;
+    @Column(name = "name")
     private String name;
-    private int release_year;
+    @Column(name = "release_year")
+    private int releaseYear;
+    @Column(name = "description")
     private String description;
+    @Column(name = "image")
     private byte[] image;
 
     public Game() {
     }
 
-    public Game(long game_id, String name, int release_year, String description, byte[] image) {
-        this.game_id = game_id;
+    public Game(long gameId, String name, int releaseYear, String description, byte[] image) {
+        this.gameId = gameId;
         this.name = name;
-        this.release_year = release_year;
+        this.releaseYear = releaseYear;
         this.description = description;
         this.image = image;
     }
-    public long getGame_id() {
-        return game_id;
+
+    public long getGameId() {
+        return gameId;
     }
 
-    public void setGame_id(long game_id) {
-        this.game_id = game_id;
+    public void setGameId(long gameId) {
+        this.gameId = gameId;
     }
 
     public String getName() {
@@ -47,12 +53,12 @@ public class Game {
         this.name = name;
     }
 
-    public int getRelease_year() {
-        return release_year;
+    public int getReleaseYear() {
+        return releaseYear;
     }
 
-    public void setRelease_year(int release_year) {
-        this.release_year = release_year;
+    public void setReleaseYear(int releaseYear) {
+        this.releaseYear = releaseYear;
     }
 
     public String getDescription() {

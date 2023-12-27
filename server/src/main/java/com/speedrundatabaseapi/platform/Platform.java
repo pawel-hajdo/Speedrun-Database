@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table
-public class platform {
+public class Platform {
 
     @Id
     @SequenceGenerator(
@@ -15,25 +15,28 @@ public class platform {
             strategy = GenerationType.SEQUENCE,
             generator = "platform_sequence"
     )
-    private long platform_id;
+    @Column(name = "platform_id")
+    private long platformId;
+    @Column(name = "name")
     private String name;
+    @Column(name = "type")
     private String type;
 
-    public platform() {
+    public Platform() {
     }
 
-    public platform(long platform_id, String name, String type) {
-        this.platform_id = platform_id;
+    public Platform(long platformId, String name, String type) {
+        this.platformId = platformId;
         this.name = name;
         this.type = type;
     }
 
-    public long getPlatform_id() {
-        return platform_id;
+    public long getPlatformId() {
+        return platformId;
     }
 
-    public void setPlatform_id(long platform_id) {
-        this.platform_id = platform_id;
+    public void setPlatformId(long platformId) {
+        this.platformId = platformId;
     }
 
     public String getName() {

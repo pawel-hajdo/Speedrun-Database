@@ -15,29 +15,34 @@ public class user {
             strategy = GenerationType.SEQUENCE,
             generator = "user_sequence"
     )
-    private long user_id;
+    @Column(name = "user_id")
+    private long userId;
+    @Column(name = "login")
     private String login;
+    @Column(name = "password")
     private String password;
+    @Column(name = "role")
     private String role;
+    @Column(name = "email")
     private String email;
 
     public user() {
     }
 
-    public user(long user_id, String login, String password, String role, String email) {
-        this.user_id = user_id;
+    public user(long userId, String login, String password, String role, String email) {
+        this.userId = userId;
         this.login = login;
         this.password = password;
         this.role = role;
         this.email = email;
     }
 
-    public long getUser_id() {
-        return user_id;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setUser_id(long user_id) {
-        this.user_id = user_id;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public String getLogin() {
