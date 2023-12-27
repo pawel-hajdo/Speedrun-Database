@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table
-public class user {
+public class User {
 
     @Id
     @SequenceGenerator(
@@ -26,10 +26,10 @@ public class user {
     @Column(name = "email")
     private String email;
 
-    public user() {
+    public User() {
     }
 
-    public user(long userId, String login, String password, String role, String email) {
+    public User(long userId, String login, String password, String role, String email) {
         this.userId = userId;
         this.login = login;
         this.password = password;
