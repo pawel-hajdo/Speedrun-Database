@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -18,7 +19,17 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public void registerNewUser(User user){
-        userRepository.save(user);
+    public void registerNewUser(User newUser){
+        Optional<User> userWithSameEmail = userRepository.findByEmail(newUser.getEmail());
+        Optional<User> userWithSameLogin = userRepository.findByLogin(newUser.getLogin());
+
+        if(userWithSameEmail.isPresent()){
+            throw new RuntimeException("User with this email already exists");
+        }
+        if(userWithSameLogin.isPresent()){
+            throw new RuntimeException("User with this login already exists");
+        }
+
+        userRepository.save(newUser);
     }
 }

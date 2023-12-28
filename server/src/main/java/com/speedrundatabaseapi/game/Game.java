@@ -56,7 +56,6 @@ public class Game {
     }
 
     public void recalculateAverageRating() {
-        System.out.println(ratings);
         if (ratings != null && !ratings.isEmpty()) {
             double sum = ratings.stream().mapToInt(GameRating::getScore).sum();
             this.averageRating = sum / ratings.size();

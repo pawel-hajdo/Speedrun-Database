@@ -31,6 +31,9 @@ public class UserController {
             userService.registerNewUser(user);
             logger.info("User added successfully");
             return ResponseEntity.ok("User added successfully");
+        }catch (RuntimeException e){
+            logger.error(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }catch (Exception e){
             logger.error("Error occurred while adding a new user");
             e.printStackTrace();
