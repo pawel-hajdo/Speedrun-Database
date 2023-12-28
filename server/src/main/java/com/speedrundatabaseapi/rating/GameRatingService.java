@@ -27,8 +27,8 @@ public class GameRatingService {
 
     @Transactional
     public void addGameRating(Long userId, Long gameId, int score){
-        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
-        Game game = gameRepository.findById(gameId).orElseThrow(() -> new EntityNotFoundException("Game not found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found while adding rating to game"));
+        Game game = gameRepository.findById(gameId).orElseThrow(() -> new EntityNotFoundException("Game not found while adding rating to game"));
 
         GameRatingKey ratingKey = new GameRatingKey(userId, gameId);
 

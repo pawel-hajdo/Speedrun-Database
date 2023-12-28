@@ -1,6 +1,10 @@
 package com.speedrundatabaseapi.user;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,6 +13,7 @@ import java.util.List;
 @RequestMapping
 public class UserController {
 
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
     @Autowired
     public UserController(UserService userService) {
@@ -21,7 +26,15 @@ public class UserController {
     }
 
     @PostMapping(path = "/register")
-    public void registerNewUser(@RequestBody User user){
-        userService.registerNewUser(user);
+    public ResponseEntity<String> registerNewUser(@RequestBody User user){
+        try{
+            userService.registerNewUser(user);
+            logger.info("User added successfully");
+            return ResponseEntity.ok("User added successfully");
+        }catch (Exception e){
+            logger.error("Error occurred while adding a new user");
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while adding a new user");
+        }
     }
 }

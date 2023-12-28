@@ -1,10 +1,11 @@
 package com.speedrundatabaseapi.platform;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ import java.util.List;
 @RequestMapping(path = "/platform")
 public class PlatformController {
 
+    private final Logger logger = LoggerFactory.getLogger(PlatformController.class);
     private final PlatformService platformService;
 
     @Autowired
@@ -25,8 +27,16 @@ public class PlatformController {
     }
 
     @PostMapping
-    public void addNewPlatform(Platform platform){
-        platformService.addNewPlatform(platform);
+    public ResponseEntity<String> addNewPlatform(@RequestBody Platform platform){
+        try{
+            platformService.addNewPlatform(platform);
+            logger.info("Platform added successfully");
+            return ResponseEntity.ok("Platform added successfully");
+        }catch (Exception e){
+            logger.error("Error occurred while adding a new platform");
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while adding a new platform");
+        }
     }
 
 }
