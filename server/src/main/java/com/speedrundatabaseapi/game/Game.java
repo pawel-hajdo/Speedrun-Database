@@ -2,6 +2,7 @@ package com.speedrundatabaseapi.game;
 
 import com.speedrundatabaseapi.platform.Platform;
 import com.speedrundatabaseapi.rating.GameRating;
+import com.speedrundatabaseapi.run.Run;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -29,20 +30,22 @@ public class Game {
     private String description;
     @Column(name = "image")
     private byte[] image;
-
+    @Column(name = "average_rating", columnDefinition = "NUMERIC(3,2)")
+    private Double averageRating;
     @ManyToMany
     @JoinTable(
             name = "game_on_platform",
             joinColumns = @JoinColumn(name = "game_id"),
             inverseJoinColumns = @JoinColumn(name = "platform_id")
     )
-    Set<Platform> gameOnPlatforms;
+    private Set<Platform> gameOnPlatforms;
 
     @OneToMany(mappedBy = "game")
-    Set<GameRating> ratings;
+    private Set<GameRating> ratings;
 
-    @Column(name = "average_rating", columnDefinition = "NUMERIC(3,2)")
-    private Double averageRating;
+    @OneToMany(mappedBy = "game")
+    private Set<Run> runsInGame;
+
     public Game() {
     }
 

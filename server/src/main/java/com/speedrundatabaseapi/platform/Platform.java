@@ -2,6 +2,7 @@ package com.speedrundatabaseapi.platform;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.speedrundatabaseapi.game.Game;
+import com.speedrundatabaseapi.run.Run;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -29,6 +30,8 @@ public class Platform {
     @ManyToMany(mappedBy = "gameOnPlatforms")
     Set<Game> gamesAssignedToPlatform;
 
+    @OneToMany(mappedBy = "platform")
+    private Set<Run> runsOnPlatform;
     public Platform() {
     }
 

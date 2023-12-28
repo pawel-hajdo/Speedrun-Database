@@ -1,6 +1,7 @@
 package com.speedrundatabaseapi.user;
 
 import com.speedrundatabaseapi.rating.GameRating;
+import com.speedrundatabaseapi.run.Run;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -29,7 +30,10 @@ public class User {
     private String email;
 
     @OneToMany(mappedBy = "user")
-    Set<GameRating> ratings;
+    private Set<GameRating> ratings;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Run> userRuns;
 
     public User() {
     }
