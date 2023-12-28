@@ -35,10 +35,19 @@ public class GameService {
 
     public void changeGameDetails(Long gameId, Game updatedGameDetails) {
         Game game = gameRepository.findById(gameId).orElseThrow(()-> new EntityNotFoundException("Game not found"));
-        game.setName(updatedGameDetails.getName());
-        game.setDescription(updatedGameDetails.getDescription());
-        game.setReleaseYear(updatedGameDetails.getReleaseYear());
-        game.setImage(updatedGameDetails.getImage());
+
+        if(updatedGameDetails.getName() != null){
+            game.setName(updatedGameDetails.getName());
+        }
+        if(updatedGameDetails.getDescription() != null){
+            game.setDescription(updatedGameDetails.getDescription());
+        }
+        if(updatedGameDetails.getReleaseYear() != 0){
+            game.setReleaseYear(updatedGameDetails.getReleaseYear());
+        }
+        if(updatedGameDetails.getImage() != null){
+            game.setImage(updatedGameDetails.getImage());
+        }
 
         gameRepository.save(game);
     }

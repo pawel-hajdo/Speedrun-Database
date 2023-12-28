@@ -32,8 +32,13 @@ public class PlatformService {
 
     public void changePlatformDetails(Long platformId, Platform updatedPlatformDetails) {
         Platform platform = platformRepository.findById(platformId).orElseThrow(()-> new EntityNotFoundException("Platform with ID " + platformId + " not found"));
-        platform.setName(updatedPlatformDetails.getName());
-        platform.setType(updatedPlatformDetails.getType());
+
+        if(updatedPlatformDetails.getName() != null){
+            platform.setName(updatedPlatformDetails.getName());
+        }
+        if(updatedPlatformDetails.getType() != null){
+            platform.setType(updatedPlatformDetails.getType());
+        }
 
         platformRepository.save(platform);
     }

@@ -40,10 +40,19 @@ public class UserService {
 
     public void changeUserDetails(Long userId, User updatedUserDetails) {
         User user = userRepository.findById(userId).orElseThrow(()-> new EntityNotFoundException("User with id " +userId + " not found"));
-        user.setEmail(updatedUserDetails.getEmail());
-        user.setLogin(updatedUserDetails.getLogin());
-        user.setPassword(updatedUserDetails.getPassword());
-        user.setRole(updatedUserDetails.getRole());
+
+        if(updatedUserDetails.getEmail() != null){
+            user.setEmail(updatedUserDetails.getEmail());
+        }
+        if(updatedUserDetails.getLogin() != null){
+            user.setLogin(updatedUserDetails.getLogin());
+        }
+        if(updatedUserDetails.getPassword() != null){
+            user.setPassword(updatedUserDetails.getPassword());
+        }
+        if(updatedUserDetails.getRole() != null){
+            user.setRole(updatedUserDetails.getRole());
+        }
 
         userRepository.save(user);
     }
