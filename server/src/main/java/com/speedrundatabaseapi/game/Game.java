@@ -2,7 +2,6 @@ package com.speedrundatabaseapi.game;
 
 import com.speedrundatabaseapi.platform.Platform;
 import com.speedrundatabaseapi.rating.GameRating;
-import com.speedrundatabaseapi.rating.GameRatingKey;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -41,15 +40,29 @@ public class Game {
 
     @OneToMany(mappedBy = "game")
     Set<GameRating> ratings;
+
+    @Column(name = "average_rating", columnDefinition = "NUMERIC(3,2)")
+    private Double averageRating;
     public Game() {
     }
 
-    public Game(long gameId, String name, int releaseYear, String description, byte[] image) {
+    public Game(long gameId, String name, int releaseYear, String description, byte[] image, Double averageRating) {
         this.gameId = gameId;
         this.name = name;
         this.releaseYear = releaseYear;
         this.description = description;
         this.image = image;
+        this.averageRating = averageRating;
+    }
+
+    public void recalculateAverageRating() {
+        System.out.println(ratings);
+        if (ratings != null && !ratings.isEmpty()) {
+            double sum = ratings.stream().mapToInt(GameRating::getScore).sum();
+            this.averageRating = sum / ratings.size();
+        } else {
+            this.averageRating = null;
+        }
     }
 
     public long getGameId() {
@@ -98,5 +111,13 @@ public class Game {
 
     public void setGameOnPlatforms(Set<Platform> gameOnPlatforms) {
         this.gameOnPlatforms = gameOnPlatforms;
+    }
+
+    public Double getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(Double averageRating) {
+        this.averageRating = averageRating;
     }
 }
