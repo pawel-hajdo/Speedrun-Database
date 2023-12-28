@@ -18,11 +18,9 @@ public class GameRatingController {
     }
 
     @PostMapping(path = "/add")
-    public ResponseEntity<String> addGameRating(@RequestParam Long userId,
-                                                @RequestParam Long gameId,
-                                                @RequestParam int score){
+    public ResponseEntity<String> addGameRating(@RequestBody GameRatingRequest gameRatingRequest){
         try{
-            gameRatingService.addGameRating(userId, gameId, score);
+            gameRatingService.addGameRating(gameRatingRequest.getUserId(), gameRatingRequest.getGameId(), gameRatingRequest.getScore());
             return ResponseEntity.ok("Rating added successfully.");
         }catch (EntityNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
