@@ -1,5 +1,6 @@
 package com.speedrundatabaseapi.platform;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,41 @@ public class PlatformController {
             logger.error("Error occurred while adding a new platform");
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while adding a new platform");
+        }
+    }
+
+    @DeleteMapping(path = "/{platformId}")
+    public ResponseEntity<String> deletePlatform(@PathVariable Long platformId){
+        try{
+            platformService.deletePlatform(platformId);
+            logger.info("Platform deleted successfully");
+            return ResponseEntity.ok("Platform deleted successfully");
+        }catch (EntityNotFoundException e){
+            logger.info(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }catch (Exception e){
+            logger.error("Error occurred while deleting a platform");
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while deleting a platform");
+        }
+    }
+
+    @PutMapping(path = "/{platformId}")
+    public ResponseEntity<String> changePlatformDetails(
+            @PathVariable Long platformId,
+            @RequestBody Platform updatedPlatformDetails
+    ){
+        try{
+            platformService.changePlatformDetails(platformId, updatedPlatformDetails);
+            logger.info("Platform details updated successfully");
+            return ResponseEntity.ok("Platform details updated successfully");
+        }catch (EntityNotFoundException e){
+            logger.info(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }catch (Exception e){
+            logger.error("Error while updating platform details");
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error while updating platform details");
         }
     }
 

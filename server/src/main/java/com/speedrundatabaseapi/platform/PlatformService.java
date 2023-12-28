@@ -1,5 +1,6 @@
 package com.speedrundatabaseapi.platform;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,22 @@ public class PlatformService {
     }
 
     public void addNewPlatform(Platform platform){
+        platformRepository.save(platform);
+    }
+
+    public void deletePlatform(Long platformId) {
+        if(platformRepository.existsById(platformId)){
+            platformRepository.deleteById(platformId);
+        }else{
+            throw new EntityNotFoundException("Platform with ID " + platformId + " not found");
+        }
+    }
+
+    public void changePlatformDetails(Long platformId, Platform updatedPlatformDetails) {
+        Platform platform = platformRepository.findById(platformId).orElseThrow(()-> new EntityNotFoundException("Platform with ID " + platformId + " not found"));
+        platform.setName(updatedPlatformDetails.getName());
+        platform.setType(updatedPlatformDetails.getType());
+
         platformRepository.save(platform);
     }
 }
