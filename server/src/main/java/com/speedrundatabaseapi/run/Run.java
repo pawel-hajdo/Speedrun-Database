@@ -1,5 +1,6 @@
 package com.speedrundatabaseapi.run;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.speedrundatabaseapi.game.Game;
 import com.speedrundatabaseapi.platform.Platform;
 import com.speedrundatabaseapi.user.User;
@@ -7,6 +8,7 @@ import jakarta.persistence.*;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table
@@ -14,12 +16,12 @@ public class Run {
 
     @Id
     @SequenceGenerator(
-            name = "game_sequence",
+            name = "run_sequence",
             allocationSize = 1
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "game_sequence"
+            generator = "run_sequence"
     )
     @Column(name = "run_id")
     private long runId;
@@ -36,8 +38,7 @@ public class Run {
     @Column(name = "video_link")
     private String videoLink;
     @Column(name = "date")
-    //private ZonedDateTime date;
-    private LocalDate date;
+    private LocalDateTime date;
     @ManyToOne
     @JoinColumn(name = "platform_id")
     private Platform platform;
@@ -47,16 +48,20 @@ public class Run {
     public Run() {
     }
 
-    public Run(long runId, User user, Game game, Duration time, String type, String videoLink, LocalDate date, Platform platform, long confirmedBy) {
+    public Run(long runId, User user, Game game, Duration time, String type, String videoLink, Platform platform, long confirmedBy) {
         this.runId = runId;
         this.user = user;
         this.game = game;
         this.time = time;
         this.type = type;
         this.videoLink = videoLink;
-        this.date = date;
         this.platform = platform;
         this.confirmedBy = confirmedBy;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        date = LocalDateTime.now();
     }
 
     public long getRunId() {
@@ -99,11 +104,11 @@ public class Run {
         this.videoLink = videoLink;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
