@@ -1,5 +1,6 @@
 package com.speedrundatabaseapi.user;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,5 +32,19 @@ public class UserService {
         }
 
         userRepository.save(newUser);
+    }
+
+    public void deleteUser(Long userId) {
+        userRepository.deleteById(userId);
+    }
+
+    public void changeUserDetails(Long userId, User updatedUserDetails) {
+        User user = userRepository.findById(userId).orElseThrow(()-> new EntityNotFoundException("User with id " +userId + " not found"));
+        user.setEmail(updatedUserDetails.getEmail());
+        user.setLogin(updatedUserDetails.getLogin());
+        user.setPassword(updatedUserDetails.getPassword());
+        user.setRole(updatedUserDetails.getRole());
+
+        userRepository.save(user);
     }
 }
