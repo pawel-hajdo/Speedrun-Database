@@ -69,4 +69,13 @@ public class RunService {
 
         runRepository.save(run);
     }
+
+    public void deleteRun(long runId) {
+        if(runRepository.existsById(runId)){
+            runRepository.deleteById(runId);
+        }else{
+            throw new EntityNotFoundException("Platform with ID " + runId + " not found");
+        }
+
+    }
 }

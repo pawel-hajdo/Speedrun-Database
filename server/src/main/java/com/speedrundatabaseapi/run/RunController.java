@@ -57,4 +57,20 @@ public class RunController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error while updating run details");
         }
     }
+
+    @DeleteMapping(path = "/{runId}")
+    public ResponseEntity<String> deleteRun(@PathVariable long runId){
+        try{
+            runService.deleteRun(runId);
+            logger.info("Run deleted successfully");
+            return ResponseEntity.ok("Run deleted successfully");
+        } catch (EntityNotFoundException e) {
+            logger.info(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            logger.error("Error occurred while deleting a run");
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error while deleting a run");
+        }
+    }
 }
