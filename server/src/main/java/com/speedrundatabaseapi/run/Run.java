@@ -1,17 +1,17 @@
 package com.speedrundatabaseapi.run;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.speedrundatabaseapi.game.Game;
 import com.speedrundatabaseapi.platform.Platform;
 import com.speedrundatabaseapi.user.User;
 import jakarta.persistence.*;
 
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
 @Table
+@JsonSerialize(using = RunCustomSerializer.class)
 public class Run {
 
     @Id
