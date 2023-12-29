@@ -1,5 +1,6 @@
 package com.speedrundatabaseapi.run;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.speedrundatabaseapi.game.Game;
 import com.speedrundatabaseapi.platform.Platform;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table
 @JsonSerialize(using = RunCustomSerializer.class)
+@JsonDeserialize(using = RunCustomDeserializer.class)
 public class Run {
 
     @Id
