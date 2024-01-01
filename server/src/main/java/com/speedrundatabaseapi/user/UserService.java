@@ -2,6 +2,7 @@ package com.speedrundatabaseapi.user;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
     @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -30,6 +32,9 @@ public class UserService {
         if(userWithSameLogin.isPresent()){
             throw new RuntimeException("User with this login already exists");
         }
+
+        String hashedPassword = bCryptPasswordEncoder.encode(newUser.getPassword());
+        newUser.setPassword(hashedPassword);
 
         userRepository.save(newUser);
     }

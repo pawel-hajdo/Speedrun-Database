@@ -25,7 +25,7 @@ public class User {
     @Column(name = "password")
     private String password;
     @Column(name = "role")
-    private String role;
+    private UserRole role;
     @Column(name = "email")
     private String email;
 
@@ -38,12 +38,14 @@ public class User {
     public User() {
     }
 
-    public User(long userId, String login, String password, String role, String email) {
+    public User(long userId, String login, String password, UserRole role, String email, Set<GameRating> ratings, Set<Run> userRuns) {
         this.userId = userId;
         this.login = login;
         this.password = password;
         this.role = role;
         this.email = email;
+        this.ratings = ratings;
+        this.userRuns = userRuns;
     }
 
     public long getUserId() {
@@ -70,11 +72,11 @@ public class User {
         this.password = password;
     }
 
-    public String getRole() {
+    public UserRole getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(UserRole role) {
         this.role = role;
     }
 
