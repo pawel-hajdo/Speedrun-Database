@@ -1,5 +1,6 @@
 package com.speedrundatabaseapi.user;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.speedrundatabaseapi.rating.GameRating;
 import com.speedrundatabaseapi.run.Run;
 import jakarta.persistence.*;
@@ -7,6 +8,7 @@ import jakarta.persistence.*;
 import java.util.Set;
 @Entity
 @Table
+@JsonSerialize(using = UserCustomSerializer.class)
 public class User {
 
     @Id

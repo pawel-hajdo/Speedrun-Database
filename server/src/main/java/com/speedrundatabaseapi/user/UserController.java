@@ -36,7 +36,7 @@ public class UserController {
         try{
             userService.registerNewUser(user);
             logger.info("User added successfully");
-            emailSender.send(user.getEmail(), emailSubject, emailText);
+            //emailSender.send(user.getEmail(), emailSubject, emailText); //not working yet
             return ResponseEntity.ok("User added successfully");
         }catch (RuntimeException e){
             logger.info(e.getMessage());

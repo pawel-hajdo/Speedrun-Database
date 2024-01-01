@@ -23,7 +23,7 @@ public class EmailService implements EmailSender{
     @Override
     public void send(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("javamail@onet.pl");
+        message.setFrom(fromMail);
         message.setTo(to);
         message.setSubject(subject);
         message.setText(text);
