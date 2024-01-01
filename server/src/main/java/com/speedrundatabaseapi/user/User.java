@@ -1,6 +1,7 @@
 package com.speedrundatabaseapi.user;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.speedrundatabaseapi.follow.Follow;
 import com.speedrundatabaseapi.rating.GameRating;
 import com.speedrundatabaseapi.run.Run;
 import jakarta.persistence.*;
@@ -36,6 +37,12 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private Set<Run> userRuns;
+
+    @OneToMany(mappedBy = "follower")
+    private Set<Follow> followers;
+
+    @OneToMany(mappedBy = "following")
+    private Set<Follow> following;
 
     public User() {
     }
