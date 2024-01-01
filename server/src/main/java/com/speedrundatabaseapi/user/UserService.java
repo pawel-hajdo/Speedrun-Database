@@ -61,4 +61,21 @@ public class UserService {
 
         userRepository.save(user);
     }
+
+    public void login(UserLoginRequest userLoginRequest) {
+        User user = userRepository.findByLogin(userLoginRequest.getLogin()).orElseThrow(()->new EntityNotFoundException("User with login: " +userLoginRequest.getLogin()+ " not found"));
+
+        String userHashedPassword = user.getPassword();
+
+        if(!bCryptPasswordEncoder.matches(userLoginRequest.getPassword(), userHashedPassword)){
+            throw new InvalidPasswordException("Wrong password");
+        }
+    }
+
+    public static class InvalidPasswordException extends RuntimeException {
+        public InvalidPasswordException(String message) {
+            super(message);
+        }
+    }
+
 }

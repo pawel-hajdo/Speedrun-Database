@@ -42,6 +42,25 @@ public class UserController {
         }
     }
 
+    @PostMapping(path = "/login")
+    public ResponseEntity<String> loginUser(@RequestBody UserLoginRequest userLoginRequest){
+        try {
+            userService.login(userLoginRequest);
+            logger.info("User logged in successfully");
+            return ResponseEntity.ok("User logged in successfully");
+        }catch (UserService.InvalidPasswordException e) {
+            logger.info(e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }catch (EntityNotFoundException e) {
+            logger.info(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }catch (Exception e){
+            logger.error("Error occurred while logging in");
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while logging in");
+        }
+    }
+
     @DeleteMapping(path = "/user/{userId}")
     public ResponseEntity<String> deleteUser(@PathVariable Long userId){
         try{
