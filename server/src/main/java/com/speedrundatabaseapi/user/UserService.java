@@ -53,7 +53,8 @@ public class UserService {
             user.setLogin(updatedUserDetails.getLogin());
         }
         if(updatedUserDetails.getPassword() != null){
-            user.setPassword(updatedUserDetails.getPassword());
+            String hashedPassword = bCryptPasswordEncoder.encode(updatedUserDetails.getPassword());
+            user.setPassword(hashedPassword);
         }
         if(updatedUserDetails.getRole() != null){
             user.setRole(updatedUserDetails.getRole());

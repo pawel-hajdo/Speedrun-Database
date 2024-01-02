@@ -30,7 +30,7 @@ public class Game {
     private String description;
     @Column(name = "image")
     private byte[] image;
-    @Column(name = "average_rating", columnDefinition = "NUMERIC(3,2)")
+    @Column(name = "average_rating", columnDefinition = "NUMERIC(4,2)")
     private Double averageRating;
     @ManyToMany
     @JoinTable(

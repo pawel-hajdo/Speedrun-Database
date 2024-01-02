@@ -29,6 +29,10 @@ public class GameRatingService {
         User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found while adding rating to game"));
         Game game = gameRepository.findById(gameId).orElseThrow(() -> new EntityNotFoundException("Game not found while adding rating to game"));
 
+        if (score < 1 || score > 10) {
+            throw new IllegalArgumentException("Score must be in the range of 1-10");
+        }
+
         GameRatingKey ratingKey = new GameRatingKey(userId, gameId);
 
         Optional<GameRating> existingRating = gameRatingRepository.findById(ratingKey);

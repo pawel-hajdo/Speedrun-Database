@@ -29,6 +29,9 @@ public class GameRatingController {
         }catch (EntityNotFoundException e){
             logger.info(e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }catch(IllegalArgumentException e){
+            logger.info(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }catch (Exception e){
             logger.error("Error occurred while rating a game");
             e.printStackTrace();
