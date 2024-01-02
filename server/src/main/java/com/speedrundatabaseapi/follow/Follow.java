@@ -1,5 +1,6 @@
 package com.speedrundatabaseapi.follow;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.speedrundatabaseapi.user.User;
 import jakarta.persistence.*;
 
@@ -8,6 +9,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "follow",
         uniqueConstraints = @UniqueConstraint(columnNames = {"follower_id", "following_id"}))
+@JsonSerialize(using = FollowCustomSerializer.class)
 public class Follow {
     @EmbeddedId
     private FollowKey id;
@@ -21,7 +23,7 @@ public class Follow {
     @JoinColumn(name = "following_id", nullable = false)
     private User following;
 
-    @Column(name = "follow_time")
+    @Column(name = "follow_time", nullable = false)
     private LocalDateTime followTime;
 
     @PrePersist
