@@ -5,4 +5,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FollowRepository extends JpaRepository<Follow, Long> {
+    void deleteById(FollowKey followKey);
 }

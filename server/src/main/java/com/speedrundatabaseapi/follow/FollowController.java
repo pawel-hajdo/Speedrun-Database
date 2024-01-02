@@ -65,4 +65,20 @@ public class FollowController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while fetching users followed by user with id " +followerId);
         }
     }
+
+    @DeleteMapping()
+    public ResponseEntity<String> unfollowUser(@RequestBody FollowRequest followRequest){
+        try{
+            followService.deleteFollow(followRequest.getFollowerId(), followRequest.getFollowingId());
+            logger.info("User unfollowed successfully");
+            return ResponseEntity.ok("User unfollowed successfully");
+        }catch (EntityNotFoundException e){
+            logger.info(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }catch (Exception e){
+            logger.error("Error occurred while unfollowing user with id " + followRequest.getFollowingId());
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while unfollowing user with id "  +followRequest.getFollowingId());
+        }
+    }
 }

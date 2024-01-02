@@ -5,6 +5,7 @@ import com.speedrundatabaseapi.user.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -41,5 +42,14 @@ public class FollowService {
         User follower = userRepository.findById(followerId)
                 .orElseThrow(() -> new EntityNotFoundException("User with id " + followerId + " not found"));
         return follower.getFollowedByUser();
+    }
+
+    @Transactional
+    public void deleteFollow(Long followerId, Long followingId) {
+        userRepository.findById(followerId).orElseThrow(() -> new EntityNotFoundException("User with id " +followerId+ " not found"));
+        userRepository.findById(followingId).orElseThrow(() -> new EntityNotFoundException("User with id " +followingId+ " not found"));
+
+        FollowKey followKey = new FollowKey(followerId, followingId);
+        followRepository.deleteById(followKey);
     }
 }
