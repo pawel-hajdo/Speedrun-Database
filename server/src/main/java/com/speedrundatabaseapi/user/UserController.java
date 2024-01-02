@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping
+@RequestMapping(path = "speedruns/api/users")
 public class UserController {
 
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -26,12 +26,12 @@ public class UserController {
         this.emailSender = emailSender;
     }
 
-    @GetMapping(path = "/users")
+    @GetMapping()
     public List<User> getAllUsers(){
         return userService.getAllUsers();
     }
 
-    @PostMapping(path = "/register")
+    @PostMapping()
     public ResponseEntity<String> registerNewUser(@RequestBody User user){
         try{
             userService.registerNewUser(user);
@@ -67,7 +67,7 @@ public class UserController {
         }
     }
 
-    @DeleteMapping(path = "/user/{userId}")
+    @DeleteMapping(path = "/{userId}")
     public ResponseEntity<String> deleteUser(@PathVariable Long userId){
         try{
             userService.deleteUser(userId);
@@ -83,7 +83,7 @@ public class UserController {
         }
     }
 
-    @PutMapping(path = "/user/{userId}")
+    @PutMapping(path = "/{userId}")
     public ResponseEntity<String> changeUserDetails(
             @PathVariable Long userId,
             @RequestBody User updatedUserDetails

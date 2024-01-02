@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/game-ratings")
+@RequestMapping("speedruns/api/game-ratings")
 public class GameRatingController {
 
     private final Logger logger = LoggerFactory.getLogger(GameRatingController.class);
@@ -20,7 +20,7 @@ public class GameRatingController {
         this.gameRatingService = gameRatingService;
     }
 
-    @PostMapping(path = "/add")
+    @PostMapping()
     public ResponseEntity<String> addGameRating(@RequestBody GameRatingRequest gameRatingRequest){
         try{
             gameRatingService.addGameRating(gameRatingRequest.getUserId(), gameRatingRequest.getGameId(), gameRatingRequest.getScore());

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/platform")
+@RequestMapping(path = "speedruns/api/platforms")
 public class PlatformController {
 
     private final Logger logger = LoggerFactory.getLogger(PlatformController.class);

@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping(path = "/follow")
+@RequestMapping(path = "speedruns/api/follows")
 public class FollowController {
 
     private final FollowService followService;
@@ -66,19 +66,19 @@ public class FollowController {
         }
     }
 
-    @DeleteMapping()
-    public ResponseEntity<String> unfollowUser(@RequestBody FollowRequest followRequest){
+    @DeleteMapping("/{followerId}/following/{followingId}")
+    public ResponseEntity<String> unfollowUser(@PathVariable Long followerId, @PathVariable Long followingId){
         try{
-            followService.deleteFollow(followRequest.getFollowerId(), followRequest.getFollowingId());
+            followService.deleteFollow(followerId, followingId);
             logger.info("User unfollowed successfully");
             return ResponseEntity.ok("User unfollowed successfully");
         }catch (EntityNotFoundException e){
             logger.info(e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }catch (Exception e){
-            logger.error("Error occurred while unfollowing user with id " + followRequest.getFollowingId());
+            logger.error("Error occurred while unfollowing user with id " + followingId);
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while unfollowing user with id "  +followRequest.getFollowingId());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while unfollowing user with id "  + followingId);
         }
     }
 }
