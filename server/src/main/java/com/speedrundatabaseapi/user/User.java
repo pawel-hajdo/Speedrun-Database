@@ -1,5 +1,7 @@
 package com.speedrundatabaseapi.user;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.speedrundatabaseapi.follow.Follow;
 import com.speedrundatabaseapi.rating.GameRating;
 import com.speedrundatabaseapi.run.Run;
 import jakarta.persistence.*;
@@ -7,6 +9,7 @@ import jakarta.persistence.*;
 import java.util.Set;
 @Entity
 @Table
+@JsonSerialize(using = UserCustomSerializer.class)
 public class User {
 
     @Id
@@ -25,7 +28,7 @@ public class User {
     @Column(name = "password")
     private String password;
     @Column(name = "role")
-    private String role;
+    private UserRole role;
     @Column(name = "email")
     private String email;
 
@@ -35,15 +38,23 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<Run> userRuns;
 
+    @OneToMany(mappedBy = "follower")
+    private Set<Follow> followedByUser;
+
+    @OneToMany(mappedBy = "following")
+    private Set<Follow> usersFollowingUser;
+
     public User() {
     }
 
-    public User(long userId, String login, String password, String role, String email) {
+    public User(long userId, String login, String password, UserRole role, String email, Set<GameRating> ratings, Set<Run> userRuns) {
         this.userId = userId;
         this.login = login;
         this.password = password;
         this.role = role;
         this.email = email;
+        this.ratings = ratings;
+        this.userRuns = userRuns;
     }
 
     public long getUserId() {
@@ -70,11 +81,11 @@ public class User {
         this.password = password;
     }
 
-    public String getRole() {
+    public UserRole getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(UserRole role) {
         this.role = role;
     }
 
@@ -84,5 +95,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Set<Follow> getFollowedByUser() {
+        return followedByUser;
+    }
+
+    public Set<Follow> getUsersFollowingUser() {
+        return usersFollowingUser;
     }
 }

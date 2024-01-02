@@ -2,6 +2,7 @@ package com.speedrundatabaseapi.user;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
     @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -31,6 +33,9 @@ public class UserService {
             throw new RuntimeException("User with this login already exists");
         }
 
+        String hashedPassword = bCryptPasswordEncoder.encode(newUser.getPassword());
+        newUser.setPassword(hashedPassword);
+
         userRepository.save(newUser);
     }
 
@@ -48,7 +53,8 @@ public class UserService {
             user.setLogin(updatedUserDetails.getLogin());
         }
         if(updatedUserDetails.getPassword() != null){
-            user.setPassword(updatedUserDetails.getPassword());
+            String hashedPassword = bCryptPasswordEncoder.encode(updatedUserDetails.getPassword());
+            user.setPassword(hashedPassword);
         }
         if(updatedUserDetails.getRole() != null){
             user.setRole(updatedUserDetails.getRole());
@@ -56,4 +62,21 @@ public class UserService {
 
         userRepository.save(user);
     }
+
+    public void login(UserLoginRequest userLoginRequest) {
+        User user = userRepository.findByLogin(userLoginRequest.getLogin()).orElseThrow(()->new EntityNotFoundException("User with login: " +userLoginRequest.getLogin()+ " not found"));
+
+        String userHashedPassword = user.getPassword();
+
+        if(!bCryptPasswordEncoder.matches(userLoginRequest.getPassword(), userHashedPassword)){
+            throw new InvalidPasswordException("Wrong password");
+        }
+    }
+
+    public static class InvalidPasswordException extends RuntimeException {
+        public InvalidPasswordException(String message) {
+            super(message);
+        }
+    }
+
 }

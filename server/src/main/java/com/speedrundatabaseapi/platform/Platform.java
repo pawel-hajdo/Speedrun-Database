@@ -40,6 +40,9 @@ public class Platform {
         this.name = name;
     }
 
+    public Platform(long platformId) {
+    }
+
     public long getPlatformId() {
         return platformId;
     }

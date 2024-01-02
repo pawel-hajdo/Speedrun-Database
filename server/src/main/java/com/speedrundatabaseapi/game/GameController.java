@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/game")
+@RequestMapping(path = "speedruns/api/games")
 public class GameController {
 
     private final Logger logger = LoggerFactory.getLogger(GameController.class);

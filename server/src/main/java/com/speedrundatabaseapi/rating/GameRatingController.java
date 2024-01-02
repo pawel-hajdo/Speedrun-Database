@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/game-ratings")
+@RequestMapping("speedruns/api/game-ratings")
 public class GameRatingController {
 
     private final Logger logger = LoggerFactory.getLogger(GameRatingController.class);
@@ -20,7 +20,7 @@ public class GameRatingController {
         this.gameRatingService = gameRatingService;
     }
 
-    @PostMapping(path = "/add")
+    @PostMapping()
     public ResponseEntity<String> addGameRating(@RequestBody GameRatingRequest gameRatingRequest){
         try{
             gameRatingService.addGameRating(gameRatingRequest.getUserId(), gameRatingRequest.getGameId(), gameRatingRequest.getScore());
@@ -29,6 +29,9 @@ public class GameRatingController {
         }catch (EntityNotFoundException e){
             logger.info(e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }catch(IllegalArgumentException e){
+            logger.info(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }catch (Exception e){
             logger.error("Error occurred while rating a game");
             e.printStackTrace();
