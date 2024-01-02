@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping(path = "/follow")
@@ -43,9 +44,25 @@ public class FollowController {
             logger.info(e.getMessage());
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }catch (Exception e){
-            logger.error("Error occurred while adding a new user");
+            logger.error("Error occurred while following a user");
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while following a user");
+        }
+    }
+
+    @GetMapping(path = "/{followerId}")
+    public ResponseEntity<?> getUsersFollowedBy(@PathVariable Long followerId){
+        try{
+            Set<Follow> follows = followService.getUsersFollowedBy(followerId);
+            logger.info("Successfully fetched users followed by user with id " +followerId);
+            return ResponseEntity.ok(follows);
+        }catch (EntityNotFoundException e){
+            logger.info(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }catch (Exception e){
+            logger.error("Error occurred while fetching users followed by user with id " +followerId);
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while fetching users followed by user with id " +followerId);
         }
     }
 }

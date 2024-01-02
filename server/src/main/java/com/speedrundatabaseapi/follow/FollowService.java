@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class FollowService {
@@ -24,8 +25,8 @@ public class FollowService {
     }
 
     public void followUser(Long followerId, Long followingId) {
-        User user1 = userRepository.findById(followerId).orElseThrow(() -> new EntityNotFoundException("User not found"));
-        User user2 = userRepository.findById(followingId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        User user1 = userRepository.findById(followerId).orElseThrow(() -> new EntityNotFoundException("User with id" +followerId+ " not found"));
+        User user2 = userRepository.findById(followingId).orElseThrow(() -> new EntityNotFoundException("User with id" +followingId+ " not found"));
 
         if(user1.getUserId() == user2.getUserId()){
             throw new IllegalArgumentException("You can`t follow yourself");
@@ -33,5 +34,12 @@ public class FollowService {
         FollowKey followKey = new FollowKey(followerId, followingId);
 
         followRepository.save(new Follow(followKey, user1, user2));
+    }
+
+
+    public Set<Follow> getUsersFollowedBy(Long followerId) {
+        User follower = userRepository.findById(followerId)
+                .orElseThrow(() -> new EntityNotFoundException("User with id " + followerId + " not found"));
+        return follower.getFollowedByUser();
     }
 }

@@ -39,10 +39,10 @@ public class User {
     private Set<Run> userRuns;
 
     @OneToMany(mappedBy = "follower")
-    private Set<Follow> followers;
+    private Set<Follow> followedByUser;
 
     @OneToMany(mappedBy = "following")
-    private Set<Follow> following;
+    private Set<Follow> usersFollowingUser;
 
     public User() {
     }
@@ -95,5 +95,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Set<Follow> getFollowedByUser() {
+        return followedByUser;
+    }
+
+    public Set<Follow> getUsersFollowingUser() {
+        return usersFollowingUser;
     }
 }
