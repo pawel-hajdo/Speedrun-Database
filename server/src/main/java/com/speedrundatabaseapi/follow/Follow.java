@@ -9,15 +9,16 @@ import java.time.LocalDateTime;
 @Table(name = "follow",
         uniqueConstraints = @UniqueConstraint(columnNames = {"follower_id", "following_id"}))
 public class Follow {
-
+    @EmbeddedId
+    private FollowKey id;
     @ManyToOne
+    @MapsId("followerId")
     @JoinColumn(name = "follower_id", nullable = false)
-    @Id
     private User follower;
 
     @ManyToOne
+    @MapsId("followingId")
     @JoinColumn(name = "following_id", nullable = false)
-    @Id
     private User following;
 
     @Column(name = "follow_time")
@@ -31,10 +32,10 @@ public class Follow {
     public Follow() {
     }
 
-    public Follow(User follower, User following, LocalDateTime followTime) {
+    public Follow(FollowKey id, User follower, User following) {
+        this.id = id;
         this.follower = follower;
         this.following = following;
-        this.followTime = followTime;
     }
 
     public User getFollower() {
@@ -59,5 +60,13 @@ public class Follow {
 
     public void setFollowTime(LocalDateTime followTime) {
         this.followTime = followTime;
+    }
+
+    public FollowKey getId() {
+        return id;
+    }
+
+    public void setId(FollowKey id) {
+        this.id = id;
     }
 }
