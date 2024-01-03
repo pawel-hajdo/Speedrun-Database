@@ -1,6 +1,5 @@
 package com.speedrundatabaseapi.user;
 
-import com.speedrundatabaseapi.email.EmailSender;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,13 +17,11 @@ public class UserController {
 
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
-    private final EmailSender emailSender;
     private String emailSubject = "Hello";
     private String emailText = "Welcome in Game Speedruns Database!";
     @Autowired
-    public UserController(UserService userService, EmailSender emailSender) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.emailSender = emailSender;
     }
 
     @GetMapping()
@@ -35,7 +32,6 @@ public class UserController {
     @PostMapping()
     public ResponseEntity<String> registerNewUser(@RequestBody User user){
         try{
-            //emailSender.send(user.getEmail(), emailSubject, emailText); //not working yet
             return ResponseEntity.ok(userService.registerNewUser(user));
         }catch (RuntimeException e){
             logger.info(e.getMessage());
