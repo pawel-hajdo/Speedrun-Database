@@ -2,6 +2,7 @@ package com.speedrundatabaseapi.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -27,6 +28,10 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((authorize) ->
                         authorize
+                                .requestMatchers(HttpMethod.GET, "/speedruns/api/games").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/speedruns/api/games/{gameId}").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/speedruns/api/platforms").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/speedruns/api/runs").permitAll()
                                 .requestMatchers("/speedruns/api/users", "/speedruns/api/users/login").permitAll()
                                 .anyRequest().authenticated())
                 .sessionManagement((session)-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
