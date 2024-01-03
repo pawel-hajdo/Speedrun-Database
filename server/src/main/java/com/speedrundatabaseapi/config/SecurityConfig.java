@@ -27,7 +27,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((authorize) ->
                         authorize
-                                .requestMatchers("").permitAll()
+                                .requestMatchers("/speedruns/api/users", "/speedruns/api/users/login").permitAll()
                                 .anyRequest().authenticated())
                 .sessionManagement((session)-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)

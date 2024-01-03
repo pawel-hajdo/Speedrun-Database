@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,41 +32,37 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-//    @PostMapping()
-//    public ResponseEntity<String> registerNewUser(@RequestBody User user){
-//        try{
-//            userService.registerNewUser(user);
-//            logger.info("User added successfully");
-//            //emailSender.send(user.getEmail(), emailSubject, emailText); //not working yet
-//            return ResponseEntity.ok("User added successfully");
-//        }catch (RuntimeException e){
-//            logger.info(e.getMessage());
-//            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-//        }catch (Exception e){
-//            logger.error("Error occurred while adding a new user");
-//            e.printStackTrace();
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while adding a new user");
-//        }
-//    }
+    @PostMapping()
+    public ResponseEntity<String> registerNewUser(@RequestBody User user){
+        try{
+            //emailSender.send(user.getEmail(), emailSubject, emailText); //not working yet
+            return ResponseEntity.ok(userService.registerNewUser(user));
+        }catch (RuntimeException e){
+            logger.info(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }catch (Exception e){
+            logger.error("Error occurred while adding a new user");
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while adding a new user");
+        }
+    }
 
-//    @PostMapping(path = "/login")
-//    public ResponseEntity<String> loginUser(@RequestBody UserLoginRequest userLoginRequest){
-//        try {
-//            userService.login(userLoginRequest);
-//            logger.info("User logged in successfully");
-//            return ResponseEntity.ok("User logged in successfully");
-//        }catch (UserService.InvalidPasswordException e) {
-//            logger.info(e.getMessage());
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-//        }catch (EntityNotFoundException e) {
-//            logger.info(e.getMessage());
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-//        }catch (Exception e){
-//            logger.error("Error occurred while logging in");
-//            e.printStackTrace();
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while logging in");
-//        }
-//    }
+    @PostMapping(path = "/login")
+    public ResponseEntity<String> loginUser(@RequestBody UserLoginRequest userLoginRequest){
+        try {
+            return ResponseEntity.ok(userService.login(userLoginRequest));
+        }catch(BadCredentialsException e){
+            logger.info(e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }catch (EntityNotFoundException e) {
+            logger.info(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }catch (Exception e){
+            logger.error("Error occurred while logging in");
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while logging in");
+        }
+    }
 
     @DeleteMapping(path = "/{userId}")
     public ResponseEntity<String> deleteUser(@PathVariable Long userId){
