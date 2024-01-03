@@ -37,6 +37,8 @@ Endpoint used to get information about all users.
 ```json
 Path:
     none
+Headers: 
+    none
 Body:
     none
 ```
@@ -58,6 +60,8 @@ Endpoint used to register new user.
 ```json
 Path:
     none
+Headers:
+    none
 Body: 
 {
     "login": "userLogin",
@@ -68,6 +72,8 @@ Body:
 ```
 ##### Response
 ```
+JWT token
+or
 String with status description
 ```
 
@@ -77,6 +83,8 @@ Endpoint used to log in user.
 ```json
 Path:
     none
+Headers:
+    none
 Body:
 {
     "login": "userLogin",
@@ -85,6 +93,8 @@ Body:
 ```
 ##### Response
 ```
+JWT token
+or
 String with status description
 ```
 
@@ -94,6 +104,8 @@ Endpoint used to change user details.
 ```json
 Path:
     userId - id of user
+Headers:
+    Authorization: Bearer {JWT_TOKEN}
 Body: 
 {
     "login": "newUserLogin",
@@ -113,6 +125,8 @@ Endpoint used to delete user with provided id.
 ```json
 Path:
     userId - id of user
+Headers:
+    Authorization: Bearer {JWT_TOKEN}
 Body: 
     none  
 ```
@@ -127,6 +141,8 @@ Endpoint used to get information about all follows.
 ```json
 Path:
     none
+Headers:
+    Authorization: Bearer {JWT_TOKEN}
 Body:
     none
 ```
@@ -147,6 +163,8 @@ Endpoint used to get information about users that are followed by user with prov
 ```json
 Path:
     followerId - id of user
+Headers:
+    Authorization: Bearer {JWT_TOKEN}
 Body:
     none
 ```
@@ -167,6 +185,8 @@ Endpoint used to follow other user.
 ```json
 Path:
     none
+Headers:
+    Authorization: Bearer {JWT_TOKEN}
 Body:
 {
     "followerId": 1,
@@ -185,6 +205,8 @@ Endpoint used to unfollow other user.
 Path:
     followerId - id of user that wants to unfollow someone
     followingId - id of user you not longer want to follow
+Headers:
+    Authorization: Bearer {JWT_TOKEN}
 Body:
     none
 ```
@@ -198,6 +220,8 @@ Endpoint used to get information about all games.
 #### Parameters
 ```json
 Path:
+    none
+Headers:
     none
 Body:
     none
@@ -229,6 +253,8 @@ Endpoint used to get information about one game with provided id.
 ```json
 Path:
     gameId - id of game
+Headers:
+    none
 Body:
     none
 ```
@@ -257,6 +283,8 @@ Endpoint used to add new game to Database.
 ```json
 Path:
     none
+Headers:
+    Authorization: Bearer {JWT_TOKEN}
 Body:
 {
     "name": "GameName",
@@ -276,6 +304,8 @@ Endpoint used to change details of game with provided id.
 ```json
 Path:
     gameId - id of game
+Headers:
+    Authorization: Bearer {JWT_TOKEN}
 Body:
 {
     "name": "GameName",
@@ -296,6 +326,8 @@ Endpoint used to assign platform to game.
 Path:
     gameId - id of game
     platformId - id of platform
+Headers:
+    Authorization: Bearer {JWT_TOKEN}
 Body:
     none
 ```
@@ -310,6 +342,8 @@ Endpoint used to delete game with provided id.
 ```json
 Path:
     gameId - id of game to delete
+Headers:
+    Authorization: Bearer {JWT_TOKEN}
 Body:
     none
 ```
@@ -323,6 +357,8 @@ Endpoint used to get all platforms.
 #### Parameters
 ```json
 Path:
+    none
+Headers:
     none
 Body:
     none
@@ -349,6 +385,8 @@ Endpoint used to add new platform.
 ```json
 Path:
     none
+Headers:
+    Authorization: Bearer {JWT_TOKEN}
 Body:
 {
     "name": "Playstation 4",
@@ -366,6 +404,8 @@ Endpoint used to change details of platform with provided id.
 ```json
 Path:
     platformId - id of platform
+Headers:
+    Authorization: Bearer {JWT_TOKEN}
 Body:
 {
     "name": "Playstation 4",
@@ -383,6 +423,8 @@ Endpoint used to delete platform.
 ```json
 Path:
     platformId - id of platform
+Headers:
+    Authorization: Bearer {JWT_TOKEN}
 Body:
     none
 ```
@@ -397,6 +439,8 @@ Endpoint used to add game rating.
 ```json
 Path:
     none
+Headers:
+    Authorization: Bearer {JWT_TOKEN}
 Body:
 {
     "userId": 1,
@@ -414,6 +458,8 @@ Endpoint used to get information about all runs.
 #### Parameters
 ```json
 Path:
+    none
+Headers:
     none
 Body:
     none
@@ -441,6 +487,8 @@ Endpoint used to add new run.
 ```json
 Path:
     none
+Headers:
+    Authorization: Bearer {JWT_TOKEN}
 Body:
 {
     "userId": 1,
@@ -462,6 +510,8 @@ Endpoint used to update details of run with provided id
 ```json
 Path:
     runId - id of run
+Headers:
+    Authorization: Bearer {JWT_TOKEN}
 Body:
 {
     "userId": 1,
@@ -483,6 +533,8 @@ Endpoint used to delete run with provided id.
 ```json
 Path:
     runId - id of run
+Headers:
+    Authorization: Bearer {JWT_TOKEN}
 Body:
     none
 ```
