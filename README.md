@@ -16,6 +16,7 @@ Endpoints documentation -> [Endpoints.md](https://github.com/pawel-hajdo/Speedru
 - Spring Security
 - JSON Web Tokens (JWT)
 - Postgresql
+- Hibernate
 - BCrypt
 - Maven
 
