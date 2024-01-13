@@ -36,9 +36,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((authorize) ->
                         authorize
-                                .requestMatchers(HttpMethod.GET, "/speedruns/api/games").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/speedruns/api/games/{gameId}").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/speedruns/api/platforms").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/speedruns/api/games", "/speedruns/api/games/{gameId}").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/speedruns/api/platforms", "/speedruns/api/platforms/{platformId}").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/speedruns/api/runs").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/speedruns/api/users/{userId}").permitAll()
                                 .requestMatchers("/speedruns/api/users", "/speedruns/api/users/login").permitAll()
@@ -52,7 +51,7 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
         configuration.setAllowedMethods(Arrays.asList("GET"));
         configuration.setAllowedHeaders(List.of("Authorization"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
