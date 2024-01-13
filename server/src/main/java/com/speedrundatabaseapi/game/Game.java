@@ -30,7 +30,7 @@ public class Game {
     @Column(name = "description")
     private String description;
     @Column(name = "image")
-    private byte[] image;
+    private String image;
     @Column(name = "average_rating", columnDefinition = "NUMERIC(4,2)")
     private Double averageRating;
     @ManyToMany
@@ -51,7 +51,7 @@ public class Game {
     public Game() {
     }
 
-    public Game(long gameId, String name, int releaseYear, String description, byte[] image, Double averageRating) {
+    public Game(long gameId, String name, int releaseYear, String description, String image, Double averageRating) {
         this.gameId = gameId;
         this.name = name;
         this.releaseYear = releaseYear;
@@ -101,11 +101,11 @@ public class Game {
         this.description = description;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
