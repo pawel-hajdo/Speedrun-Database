@@ -1,5 +1,6 @@
 package com.speedrundatabaseapi.game;
 
+import com.speedrundatabaseapi.run.Run;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping(path = "speedruns/api/games")
@@ -38,6 +40,22 @@ public class GameController {
             logger.error("Error occurred while getting game details");
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error while getting game details");
+        }
+    }
+
+    @GetMapping(path = "/{gameId}/runs")
+    public ResponseEntity<?> getRunsInGame(@PathVariable Long gameId){
+        try{
+            Set<Run> runsInGame = gameService.getRunsInGame(gameId);
+            logger.info("Game runs fetched successfully");
+            return ResponseEntity.ok(runsInGame);
+        }catch (EntityNotFoundException e){
+            logger.info(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }catch (Exception e){
+            logger.error("Error occurred while getting game runs");
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error while getting game runs");
         }
     }
 

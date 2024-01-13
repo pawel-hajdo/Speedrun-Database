@@ -1,5 +1,6 @@
 package com.speedrundatabaseapi.game;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.speedrundatabaseapi.platform.Platform;
 import com.speedrundatabaseapi.rating.GameRating;
 import com.speedrundatabaseapi.run.Run;
@@ -44,6 +45,7 @@ public class Game {
     private Set<GameRating> ratings;
 
     @OneToMany(mappedBy = "game")
+    @JsonIgnore
     private Set<Run> runsInGame;
 
     public Game() {
@@ -121,5 +123,9 @@ public class Game {
 
     public void setAverageRating(Double averageRating) {
         this.averageRating = averageRating;
+    }
+
+    public Set<Run> getRunsInGame() {
+        return runsInGame;
     }
 }
