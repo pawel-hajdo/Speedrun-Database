@@ -2,6 +2,7 @@
 
 ## User related endpoints
 - `GET` [/speedruns/api/users](#get-speedrunsapiusers)
+- `GET` [/speedruns/api/users/{userId}](#get-speedrunsapiusersuserid)
 - `POST` [/speedruns/api/users](#post-speedrunsapiusers)
 - `POST` [/speedruns/api/users/login](#post-speedrunsapiuserslogin)
 - `PUT` [/speedruns/api/users/{userId}](#put-speedrunsapiusersuserid)
@@ -13,13 +14,15 @@
 - `DELETE` [/speedruns/api/follows/{followerId}/following/{followingId}](#delete-speedrunsapifollowsfolloweridfollowingfollowingid)
 ## Games related endpoints
 - `GET` [/speedruns/api/games](#get-speedrunsapigames)
-- `GET` [/speedruns/api/games/{gameId}](#delete-speedrunsapigameid)
+- `GET` [/speedruns/api/games/{gameId}](#get-speedrunsapigamesgameid)
+- `GET` [/speedruns/api/games/{gameId}/runs](#get-speedrunsapigamesgameidruns)
 - `POST` [/speedruns/api/games](#post-speedrunsapigames)
 - `PUT` [/speedruns/api/games/{gameId}](#put-speedrunsapigamesgameid)
 - `PUT` [/speedruns/api/games/{gameId}/platform/{platformId}](#put-speedrunsapigamesgameidplatformplatformid)
-- `DELETE` [/speedruns/api/games/{gameId}](#delete-speedrunsapigameid)
+- `DELETE` [/speedruns/api/games/{gameId}](#delete-speedrunsapigamesgameid)
 ## Platform related endpoints
 - `GET` [/speedruns/api/platforms](#get-speedrunsapiplatforms)
+- `GET` [/speedruns/api/platforms/{platformId}](#get-speedrunsapiplatformsplatformid)
 - `POST` [/speedruns/api/platforms](#post-speedrunsapiplatforms)
 - `PUT` [/speedruns/api/platforms/{platformId}](#put-speedrunsapiplatformsplatformid)
 - `DELETE` [/speedruns/api/platforms/{platformId}](#delete-speedrunsapiplatformsplatformid)
@@ -27,6 +30,7 @@
 - `POST` [/speedruns/api/game-ratings](#post-speedrunsapigame-ratings)
 ## Run related endpoints
 - `GET`[/speedruns/api/runs](#get-speedunsapiruns)
+- `GET` [/speedruns/api/runs/{runId}](#get-speedunsapirunsrunid)
 - `POST` [/speedruns/api/runs](#post-speedrunsapiruns)
 - `PUT` [/speedruns/api/runs/{runId}](#put-speedrunsapirunsrunid)
 - `DELETE` [/speedruns/api/runs/{runId}](#delete-speedrunsapirunsrunid)
@@ -52,6 +56,27 @@ Body:
         "role": "USER"
     }
 ]
+```
+
+### GET /speedruns/api/users/{userId}
+Endpoint used to get information about user with provided id.
+##### Parameters
+```json
+Path:
+    userId - id of user
+Headers: 
+    none
+Body:
+    none
+```
+##### Response
+```json
+{
+    "userId": 1,
+    "login": "userLogin",
+    "email": "userMail@mail.com",
+    "role": "USER"
+}
 ```
 
 ### POST /speedruns/api/users
@@ -234,7 +259,7 @@ Body:
         "name": "GameName",
         "releaseYear": 2021,
         "description": "Game description",
-        "image": null, //bytearray
+        "image": null,
         "averageRating": 5.0,
         "gameOnPlatforms": [
             {
@@ -265,7 +290,7 @@ Body:
     "name": "GameName",
     "releaseYear": 2021,
     "description": "Game description",
-    "image": null, //bytearray
+    "image": null,
     "averageRating": 5.0,
     "gameOnPlatforms": [
         {
@@ -275,6 +300,45 @@ Body:
         }
     ]
 }
+```
+
+### GET /speedruns/api/games/{gameId}/runs
+Endpoint used to get information about runs in game with provided id.
+#### Parameters
+```json
+Path:
+    gameId - id of game
+Headers:
+    none
+Body:
+    none
+```
+#### Response
+```json
+[
+  {
+    "runId": 1,
+    "user": {
+      "userId": 1,
+      "login": "user1"
+    },
+    "game": {
+      "gameId": 1,
+      "name": "game",
+      "image": ""
+    },
+    "time": "PT25M19S",
+    "type": "Any%",
+    "videoLink": "https://www.youtube.com/",
+    "date": "2024-01-13T23:22:43.646241",
+    "platform": {
+      "platformId": 1,
+      "type": "PC",
+      "name": "PC"
+    },
+    "confirmedBy": 0
+  }
+]
 ```
 
 ### POST /speedruns/api/games
@@ -290,7 +354,7 @@ Body:
     "name": "GameName",
     "releaseYear": 2021,
     "description": "Game description",
-    "image": "" //bytearray
+    "image": ""
 }
 ```
 #### Response
@@ -311,7 +375,7 @@ Body:
     "name": "GameName",
     "releaseYear": 2021,
     "description": "Game description",
-    "image": "" //bytearray
+    "image": ""
 }
 ```
 #### Response
@@ -336,7 +400,7 @@ Body:
 String with status description
 ```
 
-### DELETE /speedruns/api/{gameId}
+### DELETE /speedruns/api/games/{gameId}
 Endpoint used to delete game with provided id.
 #### Parameters
 ```json
@@ -377,6 +441,26 @@ Body:
         "name": "Playstation 5"
     }
 ]
+```
+
+### GET /speedruns/api/platforms/{platformId}
+Endpoint used to get information about platform with provided id.
+#### Parameters
+```json
+Path:
+    platformId - id of plaftorm
+Headers:
+    none
+Body:
+    none
+```
+#### Response
+```json
+{
+    "platformId": 1,
+    "type": "PC",
+    "name": "PC"
+}
 ```
 
 ### POST /speedruns/api/platforms
@@ -467,18 +551,66 @@ Body:
 #### Response
 ```json
 [
-    {
-        "runId": 1,
-        "userId": 1,
-        "gameId": 1,
-        "time": "PT2H5M6S",
-        "type": "idk",
-        "videoLink": "youtube.com",
-        "date": "2024-01-02T18:52:58.061358",
-        "platform": 1,
-        "confirmedBy": 0
-    }
+  {
+    "runId": 2,
+    "user": {
+      "userId": 1,
+      "login": "test2"
+    },
+    "game": {
+      "gameId": 1,
+      "name": "game",
+      "image": ""
+    },
+    "time": "PT2H5M6S",
+    "type": "idk",
+    "videoLink": "youtube.com",
+    "date": "2024-01-13T21:47:00.81043",
+    "platform": {
+      "platformId": 1,
+      "type": "PC",
+      "name": "PC"
+    },
+    "confirmedBy": 0
+  }
 ]
+```
+
+### GET /speeduns/api/runs/{runId}
+Endpoint used to get information about run with provided id
+#### Parameters
+```json
+Path:
+    runId - id of run
+Headers:
+    none
+Body:
+    none
+```
+#### Response
+```json
+{
+    "runId": 2,
+    "user": {
+      "userId": 1,
+      "login": "test2"
+    },
+    "game": {
+      "gameId": 1,
+      "name": "game",
+      "image": ""
+    },
+    "time": "PT2H5M6S",
+    "type": "idk",
+    "videoLink": "youtube.com",
+    "date": "2024-01-13T21:47:00.81043",
+    "platform": {
+      "platformId": 1,
+      "type": "PC",
+      "name": "PC"
+    },
+    "confirmedBy": 0
+}
 ```
 
 ### POST /speedruns/api/runs
