@@ -38,7 +38,7 @@ public class SecurityConfig {
                         authorize
                                 .requestMatchers(HttpMethod.GET, "/speedruns/api/games", "/speedruns/api/games/{gameId}").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/speedruns/api/platforms", "/speedruns/api/platforms/{platformId}").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/speedruns/api/runs").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/speedruns/api/runs", "/speedruns/api/runs/{runId}").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/speedruns/api/users/{userId}").permitAll()
                                 .requestMatchers("/speedruns/api/users", "/speedruns/api/users/login").permitAll()
                                 .anyRequest().authenticated())
