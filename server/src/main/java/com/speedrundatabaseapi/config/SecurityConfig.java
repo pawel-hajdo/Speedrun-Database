@@ -40,6 +40,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/speedruns/api/games/{gameId}").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/speedruns/api/platforms").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/speedruns/api/runs").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/speedruns/api/users/{userId}").permitAll()
                                 .requestMatchers("/speedruns/api/users", "/speedruns/api/users/login").permitAll()
                                 .anyRequest().authenticated())
                 .sessionManagement((session)-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

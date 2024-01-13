@@ -1,6 +1,7 @@
 package com.speedrundatabaseapi.user;
 
 import com.speedrundatabaseapi.email.EmailSender;
+import com.speedrundatabaseapi.game.Game;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +31,22 @@ public class UserController {
     @GetMapping()
     public List<User> getAllUsers(){
         return userService.getAllUsers();
+    }
+
+    @GetMapping(path = "/{userId}")
+    public ResponseEntity<?> getUserDetails(@PathVariable Long userId){
+        try{
+            User user = userService.getUserDetails(userId);
+            logger.info("User details fetched successfully");
+            return ResponseEntity.ok(user);
+        }catch (EntityNotFoundException e){
+            logger.info(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }catch (Exception e){
+            logger.error("Error occurred while getting user details");
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error while getting user details");
+        }
     }
 
     @PostMapping()
