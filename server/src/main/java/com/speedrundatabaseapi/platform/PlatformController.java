@@ -1,5 +1,6 @@
 package com.speedrundatabaseapi.platform;
 
+import com.speedrundatabaseapi.user.User;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,22 @@ public class PlatformController {
     @GetMapping
     public List<Platform> getAllPlatforms(){
         return platformService.getAllPlatforms();
+    }
+
+    @GetMapping(path = "/{platformId}")
+    public ResponseEntity<?> getUserDetails(@PathVariable Long platformId){
+        try{
+            Platform platform = platformService.getPlatformDetails(platformId);
+            logger.info("User details fetched successfully");
+            return ResponseEntity.ok(platform);
+        }catch (EntityNotFoundException e){
+            logger.info(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }catch (Exception e){
+            logger.error("Error occurred while getting platform details");
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error while getting platform details");
+        }
     }
 
     @PostMapping

@@ -29,6 +29,22 @@ public class UserController {
         return userService.getAllUsers();
     }
 
+    @GetMapping(path = "/{userId}")
+    public ResponseEntity<?> getUserDetails(@PathVariable Long userId){
+        try{
+            User user = userService.getUserDetails(userId);
+            logger.info("User details fetched successfully");
+            return ResponseEntity.ok(user);
+        }catch (EntityNotFoundException e){
+            logger.info(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }catch (Exception e){
+            logger.error("Error occurred while getting user details");
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error while getting user details");
+        }
+    }
+
     @PostMapping()
     public ResponseEntity<String> registerNewUser(@RequestBody User user){
         try{

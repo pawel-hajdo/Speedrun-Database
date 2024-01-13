@@ -78,4 +78,8 @@ public class RunService {
         }
 
     }
+
+    public Run getRunDetails(Long runId) {
+        return runRepository.findById(runId).orElseThrow(()-> new EntityNotFoundException("Run not found"));
+    }
 }

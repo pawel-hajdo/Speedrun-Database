@@ -42,4 +42,8 @@ public class PlatformService {
 
         platformRepository.save(platform);
     }
+
+    public Platform getPlatformDetails(Long platformId) {
+        return platformRepository.findById(platformId).orElseThrow(()-> new EntityNotFoundException("Platform not found"));
+    }
 }

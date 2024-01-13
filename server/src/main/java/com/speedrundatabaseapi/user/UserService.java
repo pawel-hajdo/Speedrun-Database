@@ -87,10 +87,7 @@ public class UserService {
         return jwtToken;
     }
 
-    public static class InvalidPasswordException extends RuntimeException {
-        public InvalidPasswordException(String message) {
-            super(message);
-        }
+    public User getUserDetails(Long userId) {
+        return userRepository.findById(userId).orElseThrow(()-> new EntityNotFoundException("User not found"));
     }
-
 }

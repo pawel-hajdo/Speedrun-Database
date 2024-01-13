@@ -1,5 +1,6 @@
 package com.speedrundatabaseapi.game;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.speedrundatabaseapi.platform.Platform;
 import com.speedrundatabaseapi.rating.GameRating;
 import com.speedrundatabaseapi.run.Run;
@@ -29,7 +30,7 @@ public class Game {
     @Column(name = "description")
     private String description;
     @Column(name = "image")
-    private byte[] image;
+    private String image;
     @Column(name = "average_rating", columnDefinition = "NUMERIC(4,2)")
     private Double averageRating;
     @ManyToMany
@@ -44,12 +45,13 @@ public class Game {
     private Set<GameRating> ratings;
 
     @OneToMany(mappedBy = "game")
+    @JsonIgnore
     private Set<Run> runsInGame;
 
     public Game() {
     }
 
-    public Game(long gameId, String name, int releaseYear, String description, byte[] image, Double averageRating) {
+    public Game(long gameId, String name, int releaseYear, String description, String image, Double averageRating) {
         this.gameId = gameId;
         this.name = name;
         this.releaseYear = releaseYear;
@@ -99,11 +101,11 @@ public class Game {
         this.description = description;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
@@ -121,5 +123,9 @@ public class Game {
 
     public void setAverageRating(Double averageRating) {
         this.averageRating = averageRating;
+    }
+
+    public Set<Run> getRunsInGame() {
+        return runsInGame;
     }
 }

@@ -1,5 +1,6 @@
 package com.speedrundatabaseapi.run;
 
+import com.speedrundatabaseapi.platform.Platform;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,22 @@ public class RunController {
     @GetMapping
     public List<Run> GetAllRuns(){
         return runService.getAllRuns();
+    }
+
+    @GetMapping(path = "/{runId}")
+    public ResponseEntity<?> getRunDetails(@PathVariable Long runId){
+        try{
+            Run run = runService.getRunDetails(runId);
+            logger.info("User details fetched successfully");
+            return ResponseEntity.ok(run);
+        }catch (EntityNotFoundException e){
+            logger.info(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }catch (Exception e){
+            logger.error("Error occurred while getting run details");
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error while getting run details");
+        }
     }
 
     @PostMapping
