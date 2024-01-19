@@ -12,6 +12,16 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Service class for handling business logic related to user operations in the Speedrun Database API.
+ *
+ * <p>This class is responsible for user registration, login, fetching user details, updating user details, and deleting users.</p>
+ *
+ * @author Paweł Hajdo
+ * @version 1.0
+ * @see User
+ * @see UserLoginRequest
+ */
 @Service
 public class UserService {
 
@@ -29,6 +39,16 @@ public class UserService {
             "Best regards,\n" +
             "\n" +
             "The Speedruns Database Team";
+
+    /**
+     * Constructor for UserService, injecting dependencies.
+     *
+     * @param userRepository         The UserRepository for database operations related to User entities.
+     * @param passwordEncoder        The PasswordEncoder for encoding and decoding passwords.
+     * @param jwtService             The JwtService for generating and validating JWT tokens.
+     * @param emailService           The EmailService for sending emails.
+     * @param authenticationManager  The AuthenticationManager for handling user authentication.
+     */
     @Autowired
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, EmailService emailService, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
@@ -38,18 +58,29 @@ public class UserService {
         this.authenticationManager = authenticationManager;
     }
 
-    public List<User> getAllUsers(){
+    /**
+     * Retrieves a list of all users in the database.
+     *
+     * @return List of all users.
+     */
+    public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    public String registerNewUser(User newUser){
+    /**
+     * Registers a new user in the database.
+     *
+     * @param newUser The user to be registered.
+     * @return JWT token for the registered user.
+     */
+    public String registerNewUser(User newUser) {
         Optional<User> userWithSameEmail = userRepository.findByEmail(newUser.getEmail());
         Optional<User> userWithSameLogin = userRepository.findByLogin(newUser.getLogin());
 
-        if(userWithSameEmail.isPresent()){
+        if (userWithSameEmail.isPresent()) {
             throw new RuntimeException("User with this email already exists");
         }
-        if(userWithSameLogin.isPresent()){
+        if (userWithSameLogin.isPresent()) {
             throw new RuntimeException("User with this login already exists");
         }
 
@@ -61,30 +92,47 @@ public class UserService {
         return jwtService.generateToken(newUser);
     }
 
+    /**
+     * Deletes a user from the database by their ID.
+     *
+     * @param userId The ID of the user to be deleted.
+     */
     public void deleteUser(Long userId) {
         userRepository.deleteById(userId);
     }
 
+    /**
+     * Updates user details in the database.
+     *
+     * @param userId             The ID of the user to be updated.
+     * @param updatedUserDetails The updated user details.
+     */
     public void changeUserDetails(Long userId, User updatedUserDetails) {
-        User user = userRepository.findById(userId).orElseThrow(()-> new EntityNotFoundException("User with id " +userId + " not found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User with id " + userId + " not found"));
 
-        if(updatedUserDetails.getEmail() != null){
+        if (updatedUserDetails.getEmail() != null) {
             user.setEmail(updatedUserDetails.getEmail());
         }
-        if(updatedUserDetails.getLogin() != null){
+        if (updatedUserDetails.getLogin() != null) {
             user.setLogin(updatedUserDetails.getLogin());
         }
-        if(updatedUserDetails.getPassword() != null){
+        if (updatedUserDetails.getPassword() != null) {
             String hashedPassword = passwordEncoder.encode(updatedUserDetails.getPassword());
             user.setPassword(hashedPassword);
         }
-        if(updatedUserDetails.getRole() != null){
+        if (updatedUserDetails.getRole() != null) {
             user.setRole(updatedUserDetails.getRole());
         }
 
         userRepository.save(user);
     }
 
+    /**
+     * Authenticates a user based on login credentials and returns a JWT token.
+     *
+     * @param userLoginRequest The login credentials.
+     * @return JWT token for the authenticated user.
+     */
     public String login(UserLoginRequest userLoginRequest) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -92,13 +140,17 @@ public class UserService {
                         userLoginRequest.getPassword()
                 )
         );
-        User user = userRepository.findByLogin(userLoginRequest.getLogin()).orElseThrow(()->new EntityNotFoundException("User with login: " +userLoginRequest.getLogin()+ " not found"));
-        String jwtToken = jwtService.generateToken(user);
-
-        return jwtToken;
+        User user = userRepository.findByLogin(userLoginRequest.getLogin()).orElseThrow(() -> new EntityNotFoundException("User with login: " + userLoginRequest.getLogin() + " not found"));
+        return jwtService.generateToken(user);
     }
 
+    /**
+     * Retrieves details of a user by their ID.
+     *
+     * @param userId The ID of the user.
+     * @return User details.
+     */
     public User getUserDetails(Long userId) {
-        return userRepository.findById(userId).orElseThrow(()-> new EntityNotFoundException("User not found"));
+        return userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
 }
