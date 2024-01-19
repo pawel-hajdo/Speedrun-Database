@@ -29,8 +29,8 @@
 ## Rating related endpoints
 - `POST` [/speedruns/api/game-ratings](#post-speedrunsapigame-ratings)
 ## Run related endpoints
-- `GET`[/speedruns/api/runs](#get-speedunsapiruns)
-- `GET` [/speedruns/api/runs/{runId}](#get-speedunsapirunsrunid)
+- `GET`[/speedruns/api/runs](#get-speedrunsapiruns)
+- `GET` [/speedruns/api/runs/{runId}](#get-speedrunsapirunsrunid)
 - `POST` [/speedruns/api/runs](#post-speedrunsapiruns)
 - `PUT` [/speedruns/api/runs/{runId}](#put-speedrunsapirunsrunid)
 - `DELETE` [/speedruns/api/runs/{runId}](#delete-speedrunsapirunsrunid)
@@ -537,7 +537,7 @@ Body:
 String with status description
 ```
 
-### GET /speeduns/api/runs
+### GET /speedruns/api/runs
 Endpoint used to get information about all runs.
 #### Parameters
 ```json
@@ -576,7 +576,7 @@ Body:
 ]
 ```
 
-### GET /speeduns/api/runs/{runId}
+### GET /speedruns/api/runs/{runId}
 Endpoint used to get information about run with provided id
 #### Parameters
 ```json

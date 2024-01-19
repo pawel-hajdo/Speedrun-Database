@@ -12,10 +12,30 @@ import com.speedrundatabaseapi.user.User;
 import java.io.IOException;
 import java.time.Duration;
 
+/**
+ * Custom deserializer for the Run class, used during JSON deserialization.
+ *
+ * <p>This class defines the deserialization process for converting JSON data into a Run object.</p>
+ *
+ * @author Paweł Hajdo
+ * @version 1.0
+ */
 public class RunCustomDeserializer extends JsonDeserializer<Run> {
+
+    /**
+     * Deserializes JSON data into a Run object.
+     *
+     * @param jsonParser             The JSON parser.
+     * @param deserializationContext The deserialization context.
+     * @return The deserialized Run object.
+     * @throws IOException      If an I/O error occurs.
+     * @throws JacksonException If a Jackson exception occurs.
+     */
     @Override
     public Run deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
         JsonNode node = jsonParser.getCodec().readTree(jsonParser);
+
+        // Extracting values from the JSON node
         long userId = node.get("userId").asLong();
         long gameId = node.get("gameId").asLong();
         String time = node.get("time").asText();
@@ -23,15 +43,19 @@ public class RunCustomDeserializer extends JsonDeserializer<Run> {
         String type = node.get("type").asText();
         long platformId = node.get("platformId").asLong();
 
+        // Creating User object
         User user = new User();
         user.setUserId(userId);
 
+        // Creating Game object
         Game game = new Game();
         game.setGameId(gameId);
 
+        // Creating Platform object
         Platform platform = new Platform();
         platform.setPlatformId(platformId);
 
+        // Creating Run object and setting its properties
         Run run = new Run();
         run.setUser(user);
         run.setGame(game);
