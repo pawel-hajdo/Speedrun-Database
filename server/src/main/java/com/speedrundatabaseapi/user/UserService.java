@@ -1,6 +1,7 @@
 package com.speedrundatabaseapi.user;
 
 import com.speedrundatabaseapi.config.JwtService;
+import com.speedrundatabaseapi.email.EmailService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,12 +18,14 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final EmailService emailService;
     private final AuthenticationManager authenticationManager;
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, EmailService emailService, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+        this.emailService = emailService;
         this.authenticationManager = authenticationManager;
     }
 
@@ -45,9 +48,8 @@ public class UserService {
         newUser.setPassword(hashedPassword);
 
         userRepository.save(newUser);
-
-        String jwtToken = jwtService.generateToken(newUser);
-        return jwtToken;
+        emailService.send(newUser.getEmail(), "Welcome", "test");
+        return jwtService.generateToken(newUser);
     }
 
     public void deleteUser(Long userId) {
