@@ -9,11 +9,12 @@ Endpoints documentation -> [Endpoints.md](https://github.com/pawel-hajdo/Speedru
 - Following other users, rating games, assigning platforms to the game
 - Customized access denied handling
 - Password encryption using BCrypt
-- Email notifications /*TODO*/
+- Email notifications
 
 ## Technologies
 - Spring Boot 3.2.1
 - Spring Security
+- Spring Mail
 - JSON Web Tokens (JWT)
 - Postgresql
 - Hibernate
@@ -32,6 +33,8 @@ To build and run the project, follow these steps:
   * **DB_USERNAME** - your database username
   * **DB_PASSWORD** - password to your database
   * **ENCRYPTION_KEY** - your generated encryption key
+  * **EMAIL** - your email
+  * **EMAIL_PASSWORD** - password to your email account (with gmail you have to generate app password)
 - Build the project
 - Run the project
 
