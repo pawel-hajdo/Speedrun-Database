@@ -1,6 +1,7 @@
 package com.speedrundatabaseapi.user;
 
 import com.speedrundatabaseapi.config.JwtService;
+import com.speedrundatabaseapi.email.EmailService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,12 +18,23 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final EmailService emailService;
     private final AuthenticationManager authenticationManager;
+    private final String registrationEmailSubject = "Welcome to the Speedruns Database!";
+    private final String registrationEmailText = "Dear Speedrun Enthusiast,\n" +
+            "\n" +
+            "Welcome to the Speedruns Database, your gateway to the thrilling world of game speedrunning! We're delighted that you've joined our community dedicated to the pursuit of speed and skill in gaming.\n" +
+            "Get ready for an exciting journey through the realm of Speedruns!\n" +
+            "\n" +
+            "Best regards,\n" +
+            "\n" +
+            "The Speedruns Database Team";
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, EmailService emailService, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+        this.emailService = emailService;
         this.authenticationManager = authenticationManager;
     }
 
@@ -45,9 +57,8 @@ public class UserService {
         newUser.setPassword(hashedPassword);
 
         userRepository.save(newUser);
-
-        String jwtToken = jwtService.generateToken(newUser);
-        return jwtToken;
+        emailService.send(newUser.getEmail(), registrationEmailSubject, registrationEmailText);
+        return jwtService.generateToken(newUser);
     }
 
     public void deleteUser(Long userId) {
