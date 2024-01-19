@@ -20,6 +20,15 @@ public class UserService {
     private final JwtService jwtService;
     private final EmailService emailService;
     private final AuthenticationManager authenticationManager;
+    private final String registrationEmailSubject = "Welcome to the Speedruns Database!";
+    private final String registrationEmailText = "Dear Speedrun Enthusiast,\n" +
+            "\n" +
+            "Welcome to the Speedruns Database, your gateway to the thrilling world of game speedrunning! We're delighted that you've joined our community dedicated to the pursuit of speed and skill in gaming.\n" +
+            "Get ready for an exciting journey through the realm of Speedruns!\n" +
+            "\n" +
+            "Best regards,\n" +
+            "\n" +
+            "The Speedruns Database Team";
     @Autowired
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, EmailService emailService, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
@@ -48,7 +57,7 @@ public class UserService {
         newUser.setPassword(hashedPassword);
 
         userRepository.save(newUser);
-        emailService.send(newUser.getEmail(), "Welcome", "test");
+        emailService.send(newUser.getEmail(), registrationEmailSubject, registrationEmailText);
         return jwtService.generateToken(newUser);
     }
 
