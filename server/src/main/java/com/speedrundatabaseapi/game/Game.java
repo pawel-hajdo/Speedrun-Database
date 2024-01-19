@@ -9,14 +9,14 @@ import jakarta.persistence.*;
 import java.util.Set;
 
 /**
- * Entity class representing a video game.
+ * Entity class representing a video game in the Speedrun Database.
  *
- * <p>This class is mapped to the "game" table in the database and includes information
- * about a video game, such as its name, release year, description, image, and average rating.</p>
+ * <p>This class defines the structure of the 'game' table in the database and
+ * includes various properties such as the game name, release year, description, image,
+ * average rating, and associations with platforms, ratings, and runs.</p>
  *
- * <p>It also defines relationships with other entities, such as platforms, ratings, and runs.</p>
- *
- * <p>The average rating is calculated based on the ratings given by users.</p>
+ * <p>Note: The average rating is calculated dynamically using the ratings associated
+ * with the game, and it is not directly stored in the database.</p>
  *
  * @author Paweł Hajdo
  * @version 1.0
@@ -36,22 +36,16 @@ public class Game {
     )
     @Column(name = "game_id")
     private long gameId;
-
     @Column(name = "name")
     private String name;
-
     @Column(name = "release_year")
     private int releaseYear;
-
     @Column(name = "description")
     private String description;
-
     @Column(name = "image")
     private String image;
-
     @Column(name = "average_rating", columnDefinition = "NUMERIC(4,2)")
     private Double averageRating;
-
     @ManyToMany
     @JoinTable(
             name = "game_on_platform",
@@ -68,7 +62,32 @@ public class Game {
     private Set<Run> runsInGame;
 
     /**
-     * Recalculate the average rating of the game based on user ratings.
+     * Default constructor for the Game entity.
+     */
+    public Game() {
+    }
+
+    /**
+     * Parameterized constructor for the Game entity.
+     *
+     * @param gameId        The unique identifier for the game.
+     * @param name          The name of the game.
+     * @param releaseYear   The release year of the game.
+     * @param description   The description of the game.
+     * @param image         The URL or path to the game's image.
+     * @param averageRating The average rating of the game.
+     */
+    public Game(long gameId, String name, int releaseYear, String description, String image, Double averageRating) {
+        this.gameId = gameId;
+        this.name = name;
+        this.releaseYear = releaseYear;
+        this.description = description;
+        this.image = image;
+        this.averageRating = averageRating;
+    }
+
+    /**
+     * Recalculates the average rating based on the associated ratings.
      */
     public void recalculateAverageRating() {
         if (ratings != null && !ratings.isEmpty()) {
@@ -80,164 +99,137 @@ public class Game {
     }
 
     /**
-     * Get the unique identifier of the game.
+     * Gets the unique identifier for the game.
      *
-     * @return The game's unique identifier.
+     * @return The game ID.
      */
     public long getGameId() {
         return gameId;
     }
 
     /**
-     * Set the unique identifier of the game.
+     * Sets the unique identifier for the game.
      *
-     * @param gameId The new unique identifier for the game.
+     * @param gameId The game ID to set.
      */
     public void setGameId(long gameId) {
         this.gameId = gameId;
     }
 
     /**
-     * Get the name of the game.
+     * Gets the name of the game.
      *
-     * @return The name of the game.
+     * @return The game name.
      */
     public String getName() {
         return name;
     }
 
     /**
-     * Set the name of the game.
+     * Sets the name of the game.
      *
-     * @param name The new name for the game.
+     * @param name The game name to set.
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * Get the release year of the game.
+     * Gets the release year of the game.
      *
-     * @return The release year of the game.
+     * @return The release year.
      */
     public int getReleaseYear() {
         return releaseYear;
     }
 
     /**
-     * Set the release year of the game.
+     * Sets the release year of the game.
      *
-     * @param releaseYear The new release year for the game.
+     * @param releaseYear The release year to set.
      */
     public void setReleaseYear(int releaseYear) {
         this.releaseYear = releaseYear;
     }
 
     /**
-     * Get the description of the game.
+     * Gets the description of the game.
      *
-     * @return The description of the game.
+     * @return The game description.
      */
     public String getDescription() {
         return description;
     }
 
     /**
-     * Set the description of the game.
+     * Sets the description of the game.
      *
-     * @param description The new description for the game.
+     * @param description The game description to set.
      */
     public void setDescription(String description) {
         this.description = description;
     }
 
     /**
-     * Get the image URL of the game.
+     * Gets the image URL or path of the game.
      *
-     * @return The image URL of the game.
+     * @return The game image.
      */
     public String getImage() {
         return image;
     }
 
     /**
-     * Set the image URL of the game.
+     * Sets the image URL or path of the game.
      *
-     * @param image The new image URL for the game.
+     * @param image The game image to set.
      */
     public void setImage(String image) {
         this.image = image;
     }
 
     /**
-     * Get the average rating of the game.
+     * Gets the set of platforms associated with the game.
      *
-     * @return The average rating of the game.
-     */
-    public Double getAverageRating() {
-        return averageRating;
-    }
-
-    /**
-     * Set the average rating of the game.
-     *
-     * @param averageRating The new average rating for the game.
-     */
-    public void setAverageRating(Double averageRating) {
-        this.averageRating = averageRating;
-    }
-
-    /**
-     * Get the set of platforms on which the game is available.
-     *
-     * @return The set of platforms on which the game is available.
+     * @return The set of platforms.
      */
     public Set<Platform> getGameOnPlatforms() {
         return gameOnPlatforms;
     }
 
     /**
-     * Set the set of platforms on which the game is available.
+     * Sets the set of platforms associated with the game.
      *
-     * @param gameOnPlatforms The new set of platforms for the game.
+     * @param gameOnPlatforms The set of platforms to set.
      */
     public void setGameOnPlatforms(Set<Platform> gameOnPlatforms) {
         this.gameOnPlatforms = gameOnPlatforms;
     }
 
     /**
-     * Get the set of ratings given to the game by users.
+     * Gets the average rating of the game.
      *
-     * @return The set of ratings given to the game by users.
+     * @return The average rating.
      */
-    public Set<GameRating> getRatings() {
-        return ratings;
+    public Double getAverageRating() {
+        return averageRating;
     }
 
     /**
-     * Set the set of ratings given to the game by users.
+     * Sets the average rating of the game.
      *
-     * @param ratings The new set of ratings for the game.
+     * @param averageRating The average rating to set.
      */
-    public void setRatings(Set<GameRating> ratings) {
-        this.ratings = ratings;
+    public void setAverageRating(Double averageRating) {
+        this.averageRating = averageRating;
     }
 
     /**
-     * Get the set of runs associated with the game.
+     * Gets the set of runs associated with the game.
      *
-     * @return The set of runs associated with the game.
+     * @return The set of runs.
      */
     public Set<Run> getRunsInGame() {
         return runsInGame;
-    }
-
-    /**
-     * Set the set of runs associated with the game.
-     *
-     * @param runsInGame The new set of runs for the game.
-     */
-    public void setRunsInGame(Set<Run> runsInGame) {
-        this.runsInGame = runsInGame;
     }
 }
