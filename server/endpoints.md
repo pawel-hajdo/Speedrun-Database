@@ -33,6 +33,7 @@
 - `GET` [/speedruns/api/runs/{runId}](#get-speedrunsapirunsrunid)
 - `POST` [/speedruns/api/runs](#post-speedrunsapiruns)
 - `PUT` [/speedruns/api/runs/{runId}](#put-speedrunsapirunsrunid)
+- `PUT` [/speedruns/api/runs/{runId}/confirm](#put-speedrunsapirunsrunidconfirm)
 - `DELETE` [/speedruns/api/runs/{runId}](#delete-speedrunsapirunsrunid)
 
 ### GET /speedruns/api/users
@@ -652,6 +653,24 @@ Body:
     "videoLink": "youtube.com",
     "type": "idk",
     "platformId": 3
+}
+```
+#### Response
+```
+String with status description
+```
+
+### PUT /speedruns/api/runs/{runId}/confirm
+Endpoint used to confirm run with provided id
+#### Parameters
+```json
+Path:
+    runId - id of run
+Headers:
+    Authorization: Bearer {JWT_TOKEN}
+Body:
+{
+    "userId": 1, //user has to be an admin
 }
 ```
 #### Response

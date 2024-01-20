@@ -1,12 +1,14 @@
 package com.speedrundatabaseapi.run;
 
 import com.speedrundatabaseapi.platform.Platform;
+import com.speedrundatabaseapi.user.User;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -112,6 +114,35 @@ public class RunController {
             logger.error("Error while updating run details");
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error while updating run details");
+        }
+    }
+
+    /**
+     * Endpoint for confirming run.
+     *
+     * @param runId The ID of the run to be updated.
+     * @param user User confirming run.
+     * @return ResponseEntity with success message or an error message.
+     */
+    @PutMapping(path = "/{runId}/confirm")
+    public ResponseEntity<String> confirmRun(
+            @PathVariable long runId,
+            @RequestBody User user
+    ){
+        try{
+            runService.confirmRun(runId,user.getUserId());
+            logger.info("Run confirmed successfully"+ user.getUserId());
+            return ResponseEntity.ok("Run confirmed successfully");
+        } catch (AccessDeniedException e) {
+            logger.info(e.getMessage());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        } catch (EntityNotFoundException e) {
+            logger.info(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            logger.error("Error while confirming run");
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error while confirming run");
         }
     }
 
