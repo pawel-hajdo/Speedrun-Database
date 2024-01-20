@@ -6,11 +6,15 @@ import com.speedrundatabaseapi.platform.Platform;
 import com.speedrundatabaseapi.platform.PlatformRepository;
 import com.speedrundatabaseapi.user.User;
 import com.speedrundatabaseapi.user.UserRepository;
+import com.speedrundatabaseapi.user.UserRole;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static com.speedrundatabaseapi.user.UserRole.ADMIN;
 
 /**
  * Service class for managing operations related to runs in the Speedrun Database.
@@ -76,13 +80,56 @@ public class RunService {
      * @param updatedRunDetails The updated details for the run.
      */
     public void changeRunDetails(long runId, Run updatedRunDetails) {
-        Run run = runRepository.findById(runId)
-                .orElseThrow(() -> new EntityNotFoundException("Run with id " + runId + " not found"));
+        Run run = runRepository.findById(runId).orElseThrow(()-> new EntityNotFoundException("Run with id " +runId+ " not found"));
 
-        // Update run details based on non-null properties in updatedRunDetails
-        // ...
+
+        if(updatedRunDetails.getTime() != null){
+            run.setTime(updatedRunDetails.getTime());
+        }
+        if(updatedRunDetails.getVideoLink() != null){
+            run.setVideoLink(updatedRunDetails.getVideoLink());
+        }
+        if(updatedRunDetails.getType() != null){
+            run.setType(updatedRunDetails.getType());
+        }
+        if (updatedRunDetails.getUser() != null) {
+            User user = userRepository.findById(updatedRunDetails.getUser().getUserId())
+                    .orElseThrow(() -> new EntityNotFoundException("User with id " + updatedRunDetails.getUser().getUserId() + " not found"));
+
+            run.setUser(user);
+        }
+        if (updatedRunDetails.getGame() != null) {
+            Game game = gameRepository.findById(updatedRunDetails.getGame().getGameId())
+                    .orElseThrow(() -> new EntityNotFoundException("Game with id " + updatedRunDetails.getGame().getGameId() + " not found"));
+
+            run.setGame(game);
+        }
+        if (updatedRunDetails.getPlatform() != null) {
+            Platform platform = platformRepository.findById(updatedRunDetails.getPlatform().getPlatformId())
+                    .orElseThrow(() -> new EntityNotFoundException("Platform with id " + updatedRunDetails.getPlatform().getPlatformId() + " not found"));
+
+            run.setPlatform(platform);
+        }
 
         runRepository.save(run);
+    }
+    /**
+     * Confirms a run with provided id.
+     *
+     * @param runId The ID of the run to be deleted.
+     * @param userId The ID of user confirming run.
+     */
+    public void confirmRun(Long runId, Long userId){
+        Run run = runRepository.findById(runId).orElseThrow(()-> new EntityNotFoundException("Run with id " +runId+ " not found"));
+        User user = userRepository.findById(userId).orElseThrow(()-> new EntityNotFoundException("User with id " +userId+ " not found"));
+
+        UserRole userRole = user.getRole();
+        if(userRole == ADMIN){
+            run.setConfirmedBy(userId);
+            runRepository.save(run);
+        }else {
+            throw new AccessDeniedException("You are not allowed to perform this action");
+        }
     }
 
     /**
