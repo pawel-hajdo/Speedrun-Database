@@ -1,5 +1,6 @@
 package com.speedrundatabaseapi.config;
 
+import com.speedrundatabaseapi.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -57,7 +58,7 @@ public class JwtService {
      * @param userDetails The user details for whom the token is generated.
      * @return The generated JWT token.
      */
-    public String generateToken(UserDetails userDetails){
+    public String generateToken(User userDetails){
         return generateToken(new HashMap<>(), userDetails);
     }
 
@@ -68,7 +69,7 @@ public class JwtService {
      * @param userDetails  The user details for whom the token is generated.
      * @return The generated JWT token.
      */
-    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails){
+    public String generateToken(Map<String, Object> extraClaims, User userDetails){
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
@@ -76,6 +77,8 @@ public class JwtService {
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 6)) //6 hours
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .claim("role", userDetails.getRole())
+                .claim("id", userDetails.getUserId())
                 .compact();
     }
 
